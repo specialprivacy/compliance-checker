@@ -1,0 +1,35 @@
+image: docker:git
+services:
+  - docker:dind
+
+stages:
+  - build
+  - release
+
+variables:
+  REGISTRY_ENDPOINT: specialregistry.wdullaer.com
+  REGISTRY_IMAGE: specialregistry.wdullaer.com/special/consent-management-backend
+  CONTAINER_TEST_IMAGE: ${REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+  CONTAINER_RELEASE_IMAGE: ${REGISTRY_IMAGE}:latest
+  CONTAINER_TAG_IMAGE: ${REGISTRY_IMAGE}:${CI_COMMIT_TAG}
+
+before_script:
+  - docker login -u ${REGISTRY_USERNAME} -p ${REGISTRY_PASSWORD} ${REGISTRY_ENDPOINT}
+
+build:
+  stage: build
+  script:
+    - docker pull "${CONTAINER_RELEASE_IMAGE}"
+    - docker build --cache-from "${CONTAINER_RELEASE_IMAGE}" -t ${CONTAINER_TEST_IMAGE} .
+    - docker push ${CONTAINER_TEST_IMAGE}
+
+release:
+  stage: release
+  script:
+    - docker pull ${CONTAINER_TEST_IMAGE}
+    - target_image=$([ "${CI_COMMIT_REF_NAME}" = "master" ] && echo "${CONTAINER_RELEASE_IMAGE}" || echo "${CONTAINER_TAG_IMAGE}")
+    - docker tag ${CONTAINER_TEST_IMAGE} "${target_image}"
+    - docker push "${target_image}"
+  only:
+    - master
+    - tags
