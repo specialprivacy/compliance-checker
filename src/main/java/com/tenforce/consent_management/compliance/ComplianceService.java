@@ -28,8 +28,8 @@ public class ComplianceService {
      * reasoner that comes with it.
      */
     public void instantiateComplianceChecker() {
-        String foldername = System.getenv("RULESDIRECTORY");
-        this.complianceChecker = new ComplianceChecker(foldername);
+        this.complianceChecker = new ComplianceChecker(
+                com.tenforce.consent_management.config.Configuration.getRulesDirectory());
     }
 
      /**

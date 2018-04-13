@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tenforce.consent_management.compliance.ComplianceExplanation;
 import com.tenforce.consent_management.compliance.ComplianceService;
+import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.*;
 import com.tenforce.consent_management.consent_management.ConsentFile;
 import com.tenforce.consent_management.kafka.PolicyConsumer;
@@ -28,8 +29,9 @@ public class RootController {
 
   @PostConstruct
   public void startKafkaConsumer() {
-    policyConsumer = new PolicyConsumer(System.getenv("KAFKATOPIC"));
-    policyConsumer.start();
+    // start the kafka policy consumer
+//    policyConsumer = new PolicyConsumer(Configuration.getKafkaTopicPolicy());
+//    policyConsumer.start();
   }
 
   /**

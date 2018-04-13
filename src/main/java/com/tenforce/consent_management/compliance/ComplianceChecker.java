@@ -167,7 +167,8 @@ public class ComplianceChecker {
      * @return the classname of the data subject policy with the passed id
      */
     public static String getDataSubjectPolicyClassName(String id) {
-        return System.getenv("POLICYCLASSBASE") + "DataSubjectPolicy_" + id;
+        return com.tenforce.consent_management.config.Configuration.getPolicyClassBase() +
+                "DataSubjectPolicy_" + id;
     }
 
     /**
@@ -176,7 +177,8 @@ public class ComplianceChecker {
      * @return the classname of the data controller policy with the passed id
      */
     public static String getDataControllerPolicyClassName(String id) {
-        return System.getenv("POLICYCLASSBASE") + "DataControllerPolicy_" + id;
+        return com.tenforce.consent_management.config.Configuration.getPolicyClassBase() +
+                "DataControllerPolicy_" + id;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.tenforce.consent_management.consent_management;
 
 import com.tenforce.consent_management.compliance.ComplianceChecker;
+import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.Policy;
 
 import java.io.File;
@@ -63,7 +64,7 @@ public class ConsentFile {
     }
 
     private static String getDataSubjectPolicyFileName(String dataSubjectID) {
-        return System.getenv("RULESDIRECTORY") + "/Policies/DataSubjectPolicies/" + dataSubjectID + ".owl";
+        return Configuration.getRulesDirectory() + "/Policies/DataSubjectPolicies/" + dataSubjectID + ".owl";
     }
 
     public static void updatePolicyFile (Policy policy, String dataSubjectID) throws FileNotFoundException {
