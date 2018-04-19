@@ -8,6 +8,7 @@ import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.*;
 import com.tenforce.consent_management.consent_management.ConsentFile;
 import com.tenforce.consent_management.kafka.PolicyConsumer;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -57,14 +58,19 @@ public class RootController {
     this.complianceService.instantiateComplianceChecker();
 
     // checks if there is a consent
-    boolean consent = this.complianceService.hasConsent(dataSubjectId, dataControllerId);
+    try {
+      boolean consent = this.complianceService.hasConsent(dataSubjectId, dataControllerId);
 
-    if(consent) {
-      log.info("[*] " + dataControllerId + " accessed " + dataSubjectId + "'s data legitimately.");
-      return new ResponseEntity<String>("", HttpStatus.OK);
-    } else {
-      log.info("[!] " + dataControllerId + " accessed " + dataSubjectId + "'s data without permission!");
-      return new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
+      if (consent) {
+        log.info("[*] " + dataControllerId + " accessed " + dataSubjectId + "'s data legitimately.");
+        return new ResponseEntity<String>("", HttpStatus.OK);
+      } else {
+        log.info("[!] " + dataControllerId + " accessed " + dataSubjectId + "'s data without permission!");
+        return new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
+      }
+    } catch (OWLOntologyCreationException e) {
+      e.printStackTrace();
+      return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

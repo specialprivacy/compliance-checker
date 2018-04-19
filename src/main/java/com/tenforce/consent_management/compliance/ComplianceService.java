@@ -1,18 +1,12 @@
 package com.tenforce.consent_management.compliance;
 
-import com.clarkparsia.owlapi.explanation.BlackBoxExplanation;
-import com.clarkparsia.owlapi.explanation.HSTExplanationGenerator;
-import com.clarkparsia.owlapi.explanation.SatisfiabilityConverter;
-import org.semanticweb.HermiT.Configuration;
-import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 
-import java.util.Collections;
-import java.util.Set;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by langens-jonathan on 3/9/18.
@@ -29,6 +23,7 @@ public class ComplianceService {
      */
     public void instantiateComplianceChecker() {
         this.complianceChecker = new ComplianceChecker(
+                new HermiTReasonerFactory(),
                 com.tenforce.consent_management.config.Configuration.getRulesDirectory());
     }
 
@@ -39,11 +34,26 @@ public class ComplianceService {
      * @param dataSubjectId the id of the data subject's policy
      * @param dataControllerId the id of the data controller's policy
      * @return true if data controller policy C= data subject policy
+      * @throws OWLOntologyCreationException if one of the ontologies cannot be instantiated
      */
-    public boolean hasConsent(String dataSubjectId, String dataControllerId) {
+    public boolean hasConsent(String dataSubjectId, String dataControllerId) throws OWLOntologyCreationException {
+        return this.complianceChecker.hasConsent(dataSubjectId, dataControllerId);
+    }
 
-        return this.complianceChecker.isSubSetOf(this.complianceChecker.getDataControllerPolicyClassName(dataControllerId),
-                this.complianceChecker.getDataSubjectPolicyClassName(dataSubjectId));
+    /**
+     * Returns true if the policy of the data controller is a sub set of the policy of the
+     * data subject.
+     *
+     * @param dataSubjectId the id of the data subject
+     * @param dataControllerId the id of the data controller
+     * @param dataControllerOntologyString the string that holds the ontology which contains the data controller policy
+     * @return boolean consent
+     * @throws OWLOntologyCreationException if one of the ontologies, or the combination, is inconsistent
+     */
+    public boolean hasConsent(String dataSubjectId, String dataControllerId, String dataControllerOntologyString) throws OWLOntologyCreationException {
+        InputStream stream = new ByteArrayInputStream(dataControllerOntologyString.getBytes(StandardCharsets.UTF_8));
+        OWLOntology o = complianceChecker.getManager().loadOntologyFromOntologyDocument(stream);
+        return this.complianceChecker.hasConsent(dataSubjectId, dataControllerId, o);
     }
 
     /**
