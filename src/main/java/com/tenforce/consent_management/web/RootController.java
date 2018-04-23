@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tenforce.consent_management.compliance.ComplianceExplanation;
 import com.tenforce.consent_management.compliance.ComplianceService;
-import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.*;
 import com.tenforce.consent_management.consent_management.ConsentFile;
 import com.tenforce.consent_management.kafka.PolicyConsumer;
