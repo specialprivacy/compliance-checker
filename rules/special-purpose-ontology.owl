@@ -1,0 +1,340 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.specialprivacy.eu/vocabs/purposes#"
+     xml:base="http://www.specialprivacy.eu/vocabs/purposes"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:svpu="http://www.specialprivacy.eu/vocabs/purposes#"
+     xmlns:spl="http://www.specialprivacy.eu/langs/usage-policy#">
+    <owl:Ontology rdf:about="http://www.specialprivacy.eu/vocabs/purposes">
+        <!-- <owl:imports rdf:resource="http://www.specialprivacy.eu/langs/usage-policy/1.0"/> -->
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Account -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Account">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Admin -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Admin">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#AnyContact -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#AnyContact">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Arts -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Arts">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Browsing -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Browsing">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Charity -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Charity">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Communicate -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Communicate">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Current -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Current">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Custom -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Custom">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Delivery -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Delivery">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Develop -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Develop">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Downloads -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Downloads">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Education -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Education">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Feedback -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Feedback">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Finmgt -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Finmgt">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Gambling -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Gambling">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Gaming -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Gaming">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Government -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Government">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Health -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Health">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Historical -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Historical">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Login -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Login">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Marketing -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Marketing">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#News -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#News">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#OtherContact -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#OtherContact">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AnyContact"/>
+        <owl:disjointWith rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Telemarketing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Payment -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Payment">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Sales -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Sales">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Search -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Search">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#State -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#State">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Tailoring -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Tailoring">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.specialprivacy.eu/vocabs/purposes#Telemarketing -->
+
+    <owl:Class rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Telemarketing">
+        <rdfs:subClassOf rdf:resource="http://www.specialprivacy.eu/vocabs/purposes#AnyContact"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Account"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Custom"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Delivery"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Feedback"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Login"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Marketing"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Payment"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#State"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Admin"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#AnyContact"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#AuxPurpose"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Current"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Develop"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Historical"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Tailoring"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Arts"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Browsing"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Charity"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Communicate"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Downloads"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Education"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Finmgt"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Gambling"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Gaming"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Government"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Health"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#News"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Sales"/>
+            <rdf:Description rdf:about="http://www.specialprivacy.eu/vocabs/purposes#Search"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+

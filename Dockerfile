@@ -11,3 +11,5 @@ WORKDIR /usr/local/tomcat/webapps
 RUN rm -rf ./ROOT/ 
 ENV COMPLIANCECHECKERVERSION=0.1
 COPY --from=build /app/target/COMPLIANCECHECKER-${COMPLIANCECHECKERVERSION}.war ./ROOT.war
+ADD rules /rules
+ENV RULES_DIRECTORY: /rules

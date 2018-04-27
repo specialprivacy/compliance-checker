@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16#"
+     xml:base="http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/langens-jonathan/ontologies/policies/data-subject-policies/1">
+        <owl:imports rdf:resource="http://www.specialprivacy.eu/vocabs/recipients"/>
+        <owl:imports rdf:resource="http://www.specialprivacy.eu/vocabs/purposes"/>
+        <owl:imports rdf:resource="http://www.specialprivacy.eu/vocabs/duration"/>
+        <owl:imports rdf:resource="http://www.specialprivacy.eu/vocabs/data"/>
+        <owl:imports rdf:resource="http://www.specialprivacy.eu/vocabs/locations"/>
+        <owl:imports rdf:resource="http://www.specialprivacy.eu/vocabs/processing"/>
+        <owl:imports rdf:resource="http://www.semanticweb.org/langens-jonathan/ontologies/data-property-ontology"/>
+    </owl:Ontology>
+
+    <!-- http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16#DataSubjectPolicy_1 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16#DataSubjectPolicy_1">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasData"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/vocabs/data#Anonymized"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasDuration"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyDuration"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasLocation"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyLocation"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasProcessing"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyProcessing"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasPurpose"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasData"/>
+                                <owl:someValuesFrom rdf:resource="https://www.specialprivacy.eu/langs/usage-policy#AnyData"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasDuration"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyDuration"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasLocation"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/vocabs/locations#EU"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasProcessing"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyProcessing"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="spl:hasPurpose"/>
+                                <owl:someValuesFrom rdf:resource="http://www.specialprivacy.eu/langs/usage-policy#AnyPurpose"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16#DataSubjectPolicies"/>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+
