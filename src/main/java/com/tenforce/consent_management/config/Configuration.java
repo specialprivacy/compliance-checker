@@ -82,7 +82,7 @@ public class Configuration {
         if(System.getenv().containsKey(Configuration.KAFKA_TOPIC_POLICY)) {
             Configuration.kafkaTopicPolicy = System.getenv(Configuration.KAFKA_TOPIC_POLICY);
         } else {
-            Configuration.kafkaTopicPolicy = "policies";
+            Configuration.kafkaTopicPolicy = "full-policies";
         }
     }
 

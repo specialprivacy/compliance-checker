@@ -8,8 +8,12 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Properties;
@@ -18,8 +22,9 @@ import java.util.Properties;
  * Created by langens-jonathan on 3/28/18.
  */
 public class PolicyConsumer extends ShutdownableThread {
-    private final KafkaConsumer<Integer, String> consumer;
+    private final KafkaConsumer<String, String> consumer;
     private final String topic;
+    private static final Logger log = LoggerFactory.getLogger(PolicyConsumer.class);
 
     public PolicyConsumer(String topic) {
         super("KafkaPolicyConsumer", false);
@@ -29,18 +34,21 @@ public class PolicyConsumer extends ShutdownableThread {
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.IntegerDeserializer");
+
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
-        consumer = new KafkaConsumer<Integer, String>(props);
+        consumer = new KafkaConsumer<String, String>(props);
         this.topic = topic;
+        consumer.subscribe(Collections.singletonList(this.topic));
     }
 
     @Override
     public void doWork() {
         consumer.subscribe(Collections.singletonList(this.topic));
-        ConsumerRecords<Integer, String> records = consumer.poll(1000);
-        for (ConsumerRecord<Integer, String> record : records) {
+        ConsumerRecords<String, String> records = consumer.poll(1000);
+        for (ConsumerRecord<String, String> record : records) {
+            log.info("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset());
             ObjectMapper mapper = new ObjectMapper();
             try {
                 Policy postedPolicy = mapper.readValue(record.value(), Policy.class);

@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tenforce.consent_management.compliance.ComplianceExplanation;
 import com.tenforce.consent_management.compliance.ComplianceService;
+import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.*;
 import com.tenforce.consent_management.consent_management.ConsentFile;
+import com.tenforce.consent_management.kafka.ApplicationLogConsumer;
+import com.tenforce.consent_management.kafka.CheckedComplianceLogProducer;
 import com.tenforce.consent_management.kafka.PolicyConsumer;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
@@ -27,11 +30,25 @@ public class RootController {
 
   private PolicyConsumer policyConsumer = null;
 
+  private ApplicationLogConsumer applicationLogConsumer = null;
+
+  private CheckedComplianceLogProducer checkedComplianceLogProducer = null;
+
   @PostConstruct
-  public void startKafkaConsumer() {
+  public void startKafkaServices() {
     // start the kafka policy consumer
-//    policyConsumer = new PolicyConsumer(Configuration.getKafkaTopicPolicy());
-//    policyConsumer.start();
+    policyConsumer = new PolicyConsumer(Configuration.getKafkaTopicPolicy());
+    policyConsumer.start();
+
+    // start the checked application log producer
+    checkedComplianceLogProducer = new CheckedComplianceLogProducer(Configuration.getKafkaTopicConsent(), false);
+//    checkedComplianceLogProducer.start();
+
+    // start the application log consumer
+    applicationLogConsumer = new ApplicationLogConsumer(Configuration.getKafkaTopicAcces());
+    applicationLogConsumer.setCheckedComplianceLogProducer(checkedComplianceLogProducer);
+    applicationLogConsumer.setComplianceService(this.complianceService);
+    applicationLogConsumer.start();
   }
 
   /**
