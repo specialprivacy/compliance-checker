@@ -25,7 +25,7 @@ import java.util.List;
   */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ApplicationLog {
-    private String timestamp;
+    private long timestamp;
     private String process;
     private String purpose;
     private String processing;
