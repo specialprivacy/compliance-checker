@@ -48,7 +48,7 @@ public class ApplicationLogConsumer  extends ShutdownableThread {
 
     @Override
     public void doWork() {
-        consumer.subscribe(Collections.singletonList(this.topic));
+//        consumer.subscribe(Collections.singletonList(this.topic));
         ConsumerRecords<String, String> records = consumer.poll(1000);
         for (ConsumerRecord<String, String> record : records) {
             if(this.checkedComplianceLogProducer != null) {

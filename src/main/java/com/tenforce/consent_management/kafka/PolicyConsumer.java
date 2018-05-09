@@ -30,6 +30,7 @@ public class PolicyConsumer extends ShutdownableThread {
         super("KafkaPolicyConsumer", false);
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Configuration.getKafkaURLList());
+
         props.put(ConsumerConfig.GROUP_ID_CONFIG, Configuration.getKafkaClientID());
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
@@ -45,7 +46,7 @@ public class PolicyConsumer extends ShutdownableThread {
 
     @Override
     public void doWork() {
-        consumer.subscribe(Collections.singletonList(this.topic));
+//        consumer.subscribe(Collections.singletonList(this.topic));
         ConsumerRecords<String, String> records = consumer.poll(1000);
         for (ConsumerRecord<String, String> record : records) {
             log.info("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset());
