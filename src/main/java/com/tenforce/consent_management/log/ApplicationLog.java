@@ -66,12 +66,12 @@ public class ApplicationLog {
                 "                        <owl:someValuesFrom rdf:resource=\"" + this.data.get(0) + "\"/>\n" +
                 "                    </owl:Restriction>\n" +
                 "                    <owl:Restriction>\n" +
-                "                        <owl:onProperty rdf:resource=\"spl:hasDuration\"/>\n" +
-                "                        <owl:someValuesFrom rdf:resource=\"http://www.specialprivacy.eu/langs/usage-policy#AnyDuration\"/>\n" +
+                "                        <owl:onProperty rdf:resource=\"spl:hasRecipient\"/>\n" +
+                "                        <owl:someValuesFrom rdf:resource=\"" + this.recipient + "\"/>\n" +
                 "                    </owl:Restriction>\n" +
                 "                    <owl:Restriction>\n" +
-                "                        <owl:onProperty rdf:resource=\"spl:hasLocation\"/>\n" +
-                "                        <owl:someValuesFrom rdf:resource=\"http://www.specialprivacy.eu/vocabs/locations#EULike\"/>\n" +
+                "                        <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
+                "                        <owl:someValuesFrom rdf:resource=\"" + this.storage + "\"/>\n" +
                 "                    </owl:Restriction>\n" +
                 "                    <owl:Restriction>\n" +
                 "                        <owl:onProperty rdf:resource=\"spl:hasProcessing\"/>\n" +
