@@ -104,10 +104,10 @@ public class SimplePolicy {
                 "                                <owl:someValuesFrom rdf:resource=\"" + this.recipient + "\"/>\n" +
                 "                            </owl:Restriction>\n";
         // adding the storage
-        toreturn += "                            <owl:Restriction>\n" +
-                "                                <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.storage + "\"/>\n" +
-                "                            </owl:Restriction>\n";
+//        toreturn += "                            <owl:Restriction>\n" +
+//                "                                <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
+//                "                                <owl:someValuesFrom rdf:resource=\"" + this.storage + "\"/>\n" +
+//                "                            </owl:Restriction>\n";
         // ending the OWL Class
         toreturn += "                        </owl:intersectionOf>\n" +
                 "                    </owl:Class>\n";
