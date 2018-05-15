@@ -54,6 +54,7 @@ public class ApplicationLogConsumer  extends ShutdownableThread {
             if(this.checkedComplianceLogProducer != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 try {
+
                     ApplicationLog alog= mapper.readValue(record.value(), ApplicationLog.class);
                     String inMemoryConsentClass = alog.generateOWLConsentClass();
                     boolean hasConsent = false;

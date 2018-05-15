@@ -224,6 +224,9 @@ public class ComplianceChecker {
      * @return the classname of the data controller policy with the passed id
      */
     public static String getDataControllerPolicyClassName(String id) {
+        if(id.startsWith("http")) {
+            return id;
+        }
         return com.tenforce.consent_management.config.Configuration.getPolicyClassBase() +
                 "DataControllerPolicy_" + id;
     }
