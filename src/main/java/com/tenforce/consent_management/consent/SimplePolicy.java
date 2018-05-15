@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class SimplePolicy {
     private String dataCollection;
 
-    private String processingCollection;
+    private String processCollection;
 
     private String purposeCollection;
 
@@ -17,9 +17,9 @@ public class SimplePolicy {
 
     private String locationCollection;
 
-    public SimplePolicy(String dataCollection, String processingCollection, String purposeCollection, String recipientCollection, String locationCollection) {
+    public SimplePolicy(String dataCollection, String processCollection, String purposeCollection, String recipientCollection, String locationCollection) {
         this.dataCollection = dataCollection;
-        this.processingCollection = processingCollection;
+        this.processCollection = processCollection;
         this.purposeCollection = purposeCollection;
         this.recipientCollection = recipientCollection;
         this.locationCollection = locationCollection;
@@ -37,12 +37,12 @@ public class SimplePolicy {
         this.dataCollection = dataCollection;
     }
 
-    public String getProcessingCollection() {
-        return processingCollection;
+    public String getProcessCollection() {
+        return processCollection;
     }
 
-    public void setProcessingCollection(String processingCollection) {
-        this.processingCollection = processingCollection;
+    public void setProcessCollection(String processCollection) {
+        this.processCollection = processCollection;
     }
 
     public String getPurposeCollection() {
@@ -72,7 +72,7 @@ public class SimplePolicy {
     public SimplePolicy clone() {
         return new SimplePolicy(
                 this.dataCollection,
-                this.processingCollection,
+                this.processCollection,
                 this.purposeCollection,
                 this.recipientCollection,
                 this.locationCollection
@@ -88,10 +88,10 @@ public class SimplePolicy {
                 "                                <owl:onProperty rdf:resource=\"spl:hasData\"/>\n" +
                 "                                <owl:someValuesFrom rdf:resource=\"" + this.dataCollection + "\"/>\n" +
                 "                            </owl:Restriction>\n";
-        // adding the processingCollection
+        // adding the processCollection
         toreturn += "                            <owl:Restriction>\n" +
                 "                                <owl:onProperty rdf:resource=\"spl:hasProcessing\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.processingCollection + "\"/>\n" +
+                "                                <owl:someValuesFrom rdf:resource=\"" + this.processCollection + "\"/>\n" +
                 "                            </owl:Restriction>\n";
         // adding the purposeCollection
         toreturn += "                            <owl:Restriction>\n" +
