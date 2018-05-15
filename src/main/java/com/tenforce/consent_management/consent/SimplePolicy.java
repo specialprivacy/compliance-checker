@@ -7,75 +7,75 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SimplePolicy {
-    private String data;
+    private String dataCollection;
 
-    private String processing;
+    private String processingCollection;
 
-    private String purpose;
+    private String purposeCollection;
 
-    private String recipient;
+    private String recipientCollection;
 
-    private String storage;
+    private String locationCollection;
 
-    public SimplePolicy(String data, String processing, String purpose, String recipient, String storage) {
-        this.data = data;
-        this.processing = processing;
-        this.purpose = purpose;
-        this.recipient = recipient;
-        this.storage = storage;
+    public SimplePolicy(String dataCollection, String processingCollection, String purposeCollection, String recipientCollection, String locationCollection) {
+        this.dataCollection = dataCollection;
+        this.processingCollection = processingCollection;
+        this.purposeCollection = purposeCollection;
+        this.recipientCollection = recipientCollection;
+        this.locationCollection = locationCollection;
     }
 
     public SimplePolicy() {
         this("","","","","");
     }
 
-    public String getData() {
-        return data;
+    public String getDataCollection() {
+        return dataCollection;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setDataCollection(String dataCollection) {
+        this.dataCollection = dataCollection;
     }
 
-    public String getProcessing() {
-        return processing;
+    public String getProcessingCollection() {
+        return processingCollection;
     }
 
-    public void setProcessing(String processing) {
-        this.processing = processing;
+    public void setProcessingCollection(String processingCollection) {
+        this.processingCollection = processingCollection;
     }
 
-    public String getPurpose() {
-        return purpose;
+    public String getPurposeCollection() {
+        return purposeCollection;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
+    public void setPurposeCollection(String purposeCollection) {
+        this.purposeCollection = purposeCollection;
     }
 
-    public String getRecipient() {
-        return recipient;
+    public String getRecipientCollection() {
+        return recipientCollection;
     }
 
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
+    public void setRecipientCollection(String recipientCollection) {
+        this.recipientCollection = recipientCollection;
     }
 
-    public String getStorage() {
-        return storage;
+    public String getLocationCollection() {
+        return locationCollection;
     }
 
-    public void setStorage(String storage) {
-        this.storage = storage;
+    public void setLocationCollection(String locationCollection) {
+        this.locationCollection = locationCollection;
     }
 
     public SimplePolicy clone() {
         return new SimplePolicy(
-                this.data,
-                this.processing,
-                this.purpose,
-                this.recipient,
-                this.storage
+                this.dataCollection,
+                this.processingCollection,
+                this.purposeCollection,
+                this.recipientCollection,
+                this.locationCollection
         );
     }
 
@@ -83,30 +83,30 @@ public class SimplePolicy {
         // starting the OWL Class
         String toreturn = "                    <owl:Class>\n" +
                 "                        <owl:intersectionOf rdf:parseType=\"Collection\">\n";
-        // adding the data
+        // adding the dataCollection
         toreturn += "                            <owl:Restriction>\n" +
                 "                                <owl:onProperty rdf:resource=\"spl:hasData\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.data + "\"/>\n" +
+                "                                <owl:someValuesFrom rdf:resource=\"" + this.dataCollection + "\"/>\n" +
                 "                            </owl:Restriction>\n";
-        // adding the processing
+        // adding the processingCollection
         toreturn += "                            <owl:Restriction>\n" +
                 "                                <owl:onProperty rdf:resource=\"spl:hasProcessing\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.processing + "\"/>\n" +
+                "                                <owl:someValuesFrom rdf:resource=\"" + this.processingCollection + "\"/>\n" +
                 "                            </owl:Restriction>\n";
-        // adding the purpose
+        // adding the purposeCollection
         toreturn += "                            <owl:Restriction>\n" +
                 "                                <owl:onProperty rdf:resource=\"spl:hasPurpose\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.purpose + "\"/>\n" +
+                "                                <owl:someValuesFrom rdf:resource=\"" + this.purposeCollection + "\"/>\n" +
                 "                            </owl:Restriction>\n";
-        // adding the recipient
+        // adding the recipientCollection
         toreturn += "                            <owl:Restriction>\n" +
                 "                                <owl:onProperty rdf:resource=\"spl:hasRecipient\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.recipient + "\"/>\n" +
+                "                                <owl:someValuesFrom rdf:resource=\"" + this.recipientCollection + "\"/>\n" +
                 "                            </owl:Restriction>\n";
-        // adding the storage
+        // adding the locationCollection
 //        toreturn += "                            <owl:Restriction>\n" +
 //                "                                <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
-//                "                                <owl:someValuesFrom rdf:resource=\"" + this.storage + "\"/>\n" +
+//                "                                <owl:someValuesFrom rdf:resource=\"" + this.locationCollection + "\"/>\n" +
 //                "                            </owl:Restriction>\n";
         // ending the OWL Class
         toreturn += "                        </owl:intersectionOf>\n" +
