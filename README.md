@@ -12,8 +12,8 @@ A docker image is available at `specialregistry.wdullaer.com/special/complaince-
 
 Configuration is passed in through environment variables:
 
-* *POLICY_CLASS_BASE: the base for the policy class URI's
-* *RULES_DIRECTORY: the directory containing the rules **mandatory**
+* *POLICY_CLASS_BASE*: the base for the policy class URI's
+* *RULES_DIRECTORY*: the directory containing the rules **mandatory**
 * *KAFKA_URL_LIST*: The hostname of a kafka broker to boostrap the connection to the cluster
 * *KAFKA_CLIENT_ID*: The clientId used for grouping multiple instances of this app together in a single consumer group
 * *KAFKA_TOPIC_POLICY*: The topic containing the full policies to be validated
