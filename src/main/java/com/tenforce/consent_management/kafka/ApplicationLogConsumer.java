@@ -19,7 +19,10 @@ import java.util.Collections;
 import java.util.Properties;
 
 /**
- * Created by langens-jonathan on 4/25/18.
+ * Created by langens-jonathan on 4/25/18. This is basic Kafka consumer that listens to the
+ * application logs topic and takes them of one by one.
+ *
+ * After that it checks the consent for every access.
  */
 public class ApplicationLogConsumer  extends ShutdownableThread {
     private final KafkaConsumer<String, String> consumer;

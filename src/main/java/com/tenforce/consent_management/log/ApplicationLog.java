@@ -7,6 +7,11 @@ import java.util.List;
 /**
  * Created by langens-jonathan on 4/25/18.
  *
+ * A class for representing the application log format is it was initially agreed
+ * upon.
+ *
+ * Supports converting from JSON and transforming into an OWL string. An example of the JSON
+ * variant can be found below:
  {
     "timestamp":1524667034141,
     "process":"send-invoice",
@@ -69,10 +74,10 @@ public class ApplicationLog {
                 "                        <owl:onProperty rdf:resource=\"spl:hasRecipient\"/>\n" +
                 "                        <owl:someValuesFrom rdf:resource=\"" + this.recipient + "\"/>\n" +
                 "                    </owl:Restriction>\n" +
-//                "                    <owl:Restriction>\n" +
-//                "                        <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
-//                "                        <owl:someValuesFrom rdf:resource=\"" + this.storage + "\"/>\n" +
-//                "                    </owl:Restriction>\n" +
+                "                    <owl:Restriction>\n" +
+                "                        <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
+                "                        <owl:someValuesFrom rdf:resource=\"" + this.storage + "\"/>\n" +
+                "                    </owl:Restriction>\n" +
                 "                    <owl:Restriction>\n" +
                 "                        <owl:onProperty rdf:resource=\"spl:hasProcessing\"/>\n" +
                 "                        <owl:someValuesFrom rdf:resource=\"" + this.processing + "\"/>\n" +

@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Created by langens-jonathan on 3/9/18.
+ *
+ * This service provides an access interface on a singleton of the ComplianceChecker class.
  */
 public class ComplianceService {
     private static final Logger log = LoggerFactory.getLogger(ComplianceService.class);

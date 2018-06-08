@@ -22,7 +22,8 @@ import java.util.Set;
  * It also offers an easy method to check if a class is a subclass of another. This will be done by creating an
  * OWLAxiom and then checking the validity of that axiom.
  *
- * TODO at the moment the reasoner is dependent on the HermiT reasoner, that should be properly abstracted
+ * There is need for an implementation of an OWLReasonerFactory, the default implemenation is the HermiTReasonerFactory.
+ *
  * TODO we now only support the subclass axiom, this should be better abstracted to support any axiom
  */
 public class ComplianceChecker {

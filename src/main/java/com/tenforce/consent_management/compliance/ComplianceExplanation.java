@@ -7,6 +7,11 @@ import java.util.Set;
 
 /**
  * Created by langens-jonathan on 3/15/18.
+ *
+ * This is a data structture to help sharing compliance explanations
+ * around the service.
+ *
+ * A lot of TODO work here though.
  */
 public class ComplianceExplanation {
     private boolean isCompliant;

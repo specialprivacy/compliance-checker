@@ -7,6 +7,12 @@ import java.util.List;
 
 /**
  * Created by langens-jonathan on 3/28/18.
+ *
+ * This class is intended to capture all information that we know about a complex policy.
+ * It is the class that is used to transform incoming JSON strings on the kafka to in
+ * memory objects.
+ *
+ * Further the class also has support for turning itself into an OWL string
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Policy {

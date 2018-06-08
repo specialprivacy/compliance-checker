@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 
 /**
  * Created by langens-jonathan on 3/20/18.
+ *
+ * The outer shell of a consentfile. It supports writing/updating a policy to an OWL file on disk.
  */
 public class ConsentFile {
     private static String getFileStart() {

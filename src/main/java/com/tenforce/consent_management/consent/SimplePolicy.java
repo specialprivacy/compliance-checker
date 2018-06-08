@@ -4,6 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by langens-jonathan on 3/28/18.
+ *
+ * This class encapsulates a simple policy. A simple policy is a 5 tuple consisting of:
+ * - data
+ * - process
+ * - purpose
+ * - recipient
+ * - storage
+ *
+ * Further this class sports a method to turn it into a partial OWL string.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SimplePolicy {
@@ -15,14 +24,14 @@ public class SimplePolicy {
 
     private String recipientCollection;
 
-    private String locationCollection;
+    private String storageCollection;
 
-    public SimplePolicy(String dataCollection, String processCollection, String purposeCollection, String recipientCollection, String locationCollection) {
+    public SimplePolicy(String dataCollection, String processCollection, String purposeCollection, String recipientCollection, String storageCollection) {
         this.dataCollection = dataCollection;
         this.processCollection = processCollection;
         this.purposeCollection = purposeCollection;
         this.recipientCollection = recipientCollection;
-        this.locationCollection = locationCollection;
+        this.storageCollection = storageCollection;
     }
 
     public SimplePolicy() {
@@ -61,12 +70,12 @@ public class SimplePolicy {
         this.recipientCollection = recipientCollection;
     }
 
-    public String getLocationCollection() {
-        return locationCollection;
+    public String getStorageCollection() {
+        return storageCollection;
     }
 
-    public void setLocationCollection(String locationCollection) {
-        this.locationCollection = locationCollection;
+    public void setStorageCollection(String storageCollection) {
+        this.storageCollection = storageCollection;
     }
 
     public SimplePolicy clone() {
@@ -75,7 +84,7 @@ public class SimplePolicy {
                 this.processCollection,
                 this.purposeCollection,
                 this.recipientCollection,
-                this.locationCollection
+                this.storageCollection
         );
     }
 
@@ -103,11 +112,11 @@ public class SimplePolicy {
                 "                                <owl:onProperty rdf:resource=\"spl:hasRecipient\"/>\n" +
                 "                                <owl:someValuesFrom rdf:resource=\"" + this.recipientCollection + "\"/>\n" +
                 "                            </owl:Restriction>\n";
-        // adding the locationCollection
-//        toreturn += "                            <owl:Restriction>\n" +
-//                "                                <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
-//                "                                <owl:someValuesFrom rdf:resource=\"" + this.locationCollection + "\"/>\n" +
-//                "                            </owl:Restriction>\n";
+        // adding the storageCollection
+        toreturn += "                            <owl:Restriction>\n" +
+                "                                <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
+                "                                <owl:someValuesFrom rdf:resource=\"" + this.storageCollection + "\"/>\n" +
+                "                            </owl:Restriction>\n";
         // ending the OWL Class
         toreturn += "                        </owl:intersectionOf>\n" +
                 "                    </owl:Class>\n";

@@ -7,6 +7,9 @@ import java.util.Properties;
 
 /**
  * Created by langens-jonathan on 4/25/18.
+ *
+ * Basic Kafka producer that allows to write an checked-application-log to
+ * the corresponding kafka topic.
  */
 public class CheckedComplianceLogProducer extends Thread {
     private KafkaProducer<String, String> producer;
@@ -25,27 +28,6 @@ public class CheckedComplianceLogProducer extends Thread {
     }
 
     public void run() {
-//        int messageNo = 1;
-//        while (true) {
-//            String messageStr = "Message_" + messageNo;
-//            long startTime = System.currentTimeMillis();
-//            if (isAsync) { // Send asynchronously
-//                producer.send(new ProducerRecord&lt;&gt;(topic,
-//                        messageNo,
-//                        messageStr), new DemoCallBack(startTime, messageNo, messageStr));
-//            } else { // Send synchronously
-//                try {
-//                    producer.send(new ProducerRecord &lt;&gt;(topic,
-//                            messageNo,
-//                            messageStr)).get();
-//                    System.out.println("Sent message: (" + messageNo + ", " + messageStr + ")");
-//                } catch (InterruptedException | ExecutionException e) {
-//                    e.printStackTrace();
-//                    // handle the exception
-//                }
-//            }
-//            ++messageNo;
-//        }
     }
 
     public void sendMessage(String key, String value) {

@@ -20,6 +20,9 @@ import java.util.Properties;
 
 /**
  * Created by langens-jonathan on 3/28/18.
+ *
+ * Basic consumer, reads the data subject policies kafka topic and writes each of them
+ * to the correct OWL file.
  */
 public class PolicyConsumer extends ShutdownableThread {
     private final KafkaConsumer<String, String> consumer;

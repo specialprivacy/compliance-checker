@@ -5,7 +5,8 @@ import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import javax.naming.CompositeName;
 
 /**
- * Created by langens-jonathan on 4/10/18.
+ * Created by langens-jonathan on 4/10/18. This file is only here to facilitate
+ * getting configuration settings. It lazy loads settings and loads them only once.
  */
 public class Configuration {
     private static boolean instantiated = false;
