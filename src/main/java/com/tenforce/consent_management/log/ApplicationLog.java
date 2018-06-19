@@ -25,7 +25,8 @@ import java.util.List;
        "http://www.specialprivacy.eu/vocabs/data#Purchase",
        "http://www.specialprivacy.eu/vocabs/data#Preference",
        "http://www.specialprivacy.eu/vocabs/data#Social"
-    ]
+    ],
+    "eventID": "42235337-b62e-4c74-80a7-e6eddce8698f"
  }
   */
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -37,6 +38,7 @@ public class ApplicationLog {
     private String recipient;
     private String storage;
     private String userID;
+    private String eventID;
     private List<String> data;
     private boolean hasConsent = false;
 
@@ -163,6 +165,14 @@ public class ApplicationLog {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public String getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
     }
 
     public boolean isHasConsent() {

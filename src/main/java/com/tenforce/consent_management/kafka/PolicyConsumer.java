@@ -11,9 +11,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Properties;
@@ -49,7 +47,6 @@ public class PolicyConsumer extends ShutdownableThread {
 
     @Override
     public void doWork() {
-//        consumer.subscribe(Collections.singletonList(this.topic));
         ConsumerRecords<String, String> records = consumer.poll(1000);
         for (ConsumerRecord<String, String> record : records) {
             log.info("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset());

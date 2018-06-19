@@ -16,12 +16,25 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Policy {
-    List<SimplePolicy> simplePolicies = new ArrayList<SimplePolicy>();
+    private long timestamp;
+    private String userID;
+    private List<SimplePolicy> simplePolicies = new ArrayList<SimplePolicy>();
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+    public String getUserID() {
+        return userID;
+    }
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
     public List<SimplePolicy> getSimplePolicies() {
         return simplePolicies;
     }
-
     public void setSimplePolicies(List<SimplePolicy> simplePolicies) {
         this.simplePolicies = simplePolicies;
     }
