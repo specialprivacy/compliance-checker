@@ -45,7 +45,7 @@ public class RootController {
 //    checkedComplianceLogProducer.start();
 
     // start the application log consumer
-    applicationLogConsumer = new ApplicationLogConsumer(Configuration.getKafkaTopicAcces());
+    applicationLogConsumer = new ApplicationLogConsumer(Configuration.getKafkaTopicAccess());
     applicationLogConsumer.setCheckedComplianceLogProducer(checkedComplianceLogProducer);
     applicationLogConsumer.setComplianceService(this.complianceService);
     applicationLogConsumer.start();
