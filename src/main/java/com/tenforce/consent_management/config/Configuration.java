@@ -47,13 +47,13 @@ public class Configuration {
         Configuration.instantiateKafkaTopicConsent();
         Configuration.instantiateKafkaTopicPolicy();
         Configuration.instantiated = true;
-        log.info("Configuration", "policyClassBase: " + policyClassBase);
-        log.info("Configuration", "rulesDirectory: " + rulesDirectory);
-        log.info("Configuration", "kafkaURLList: " + kafkaURLList);
-        log.info("Configuration", "kafkaClientID: " + kafkaClientID);
-        log.info("Configuration", "kafkaTopicPolicy: " + kafkaTopicPolicy);
-        log.info("Configuration", "kafkaTopicAccess: " + kafkaTopicAccess);
-        log.info("Configuration", "kafkaTopicConsent: " + kafkaTopicConsent);
+        log.info("Configuration policyClassBase: {}", policyClassBase);
+        log.info("Configuration rulesDirectory: {}", rulesDirectory);
+        log.info("Configuration kafkaURLList: {}", kafkaURLList);
+        log.info("Configuration kafkaClientID: {}", kafkaClientID);
+        log.info("Configuration kafkaTopicPolicy: {}", kafkaTopicPolicy);
+        log.info("Configuration kafkaTopicAccess: {}", kafkaTopicAccess);
+        log.info("Configuration kafkaTopicConsent: {}", kafkaTopicConsent);
     }
 
     private static void instantiatePolicyClassBase() {
