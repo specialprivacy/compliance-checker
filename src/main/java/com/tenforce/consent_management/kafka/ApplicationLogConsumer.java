@@ -51,9 +51,9 @@ public class ApplicationLogConsumer  extends ShutdownableThread {
 
     @Override
     public void doWork() {
-//        consumer.subscribe(Collections.singletonList(this.topic));
         ConsumerRecords<String, String> records = consumer.poll(1000);
         for (ConsumerRecord<String, String> record : records) {
+            log.info("Processing (topic: {}, partition: {}, offset: {})", this.topic, record.partition(), record.offset());
             if(this.checkedComplianceLogProducer != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 try {
