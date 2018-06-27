@@ -42,7 +42,6 @@ public class RootController {
 
     // start the checked application log producer
     checkedComplianceLogProducer = new CheckedComplianceLogProducer(Configuration.getKafkaTopicConsent(), false);
-//    checkedComplianceLogProducer.start();
 
     // start the application log consumer
     applicationLogConsumer = new ApplicationLogConsumer(Configuration.getKafkaTopicAccess());

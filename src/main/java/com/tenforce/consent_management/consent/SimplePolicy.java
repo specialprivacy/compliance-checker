@@ -89,37 +89,29 @@ public class SimplePolicy {
     }
 
     public String toString() {
-        // starting the OWL Class
-        String toreturn = "                    <owl:Class>\n" +
-                "                        <owl:intersectionOf rdf:parseType=\"Collection\">\n";
-        // adding the dataCollection
-        toreturn += "                            <owl:Restriction>\n" +
-                "                                <owl:onProperty rdf:resource=\"spl:hasData\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.dataCollection + "\"/>\n" +
-                "                            </owl:Restriction>\n";
-        // adding the processingCollection
-        toreturn += "                            <owl:Restriction>\n" +
-                "                                <owl:onProperty rdf:resource=\"spl:hasProcessing\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.processingCollection + "\"/>\n" +
-                "                            </owl:Restriction>\n";
-        // adding the purposeCollection
-        toreturn += "                            <owl:Restriction>\n" +
-                "                                <owl:onProperty rdf:resource=\"spl:hasPurpose\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.purposeCollection + "\"/>\n" +
-                "                            </owl:Restriction>\n";
-        // adding the recipientCollection
-        toreturn += "                            <owl:Restriction>\n" +
-                "                                <owl:onProperty rdf:resource=\"spl:hasRecipient\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.recipientCollection + "\"/>\n" +
-                "                            </owl:Restriction>\n";
-        // adding the storageCollection
-        toreturn += "                            <owl:Restriction>\n" +
-                "                                <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
-                "                                <owl:someValuesFrom rdf:resource=\"" + this.storageCollection + "\"/>\n" +
-                "                            </owl:Restriction>\n";
-        // ending the OWL Class
-        toreturn += "                        </owl:intersectionOf>\n" +
-                "                    </owl:Class>\n";
-        return toreturn;
+        return "<owl:Class>\n" +
+            "    <owl:intersectionOf rdf:parseType=\"Collection\">\n" +
+            "        <owl:Restriction>\n" +
+            "            <owl:onProperty rdf:resource=\"spl:hasData\"/>\n" +
+            "            <owl:someValuesFrom rdf:resource=\"" + this.dataCollection + "\"/>\n" +
+            "        </owl:Restriction>\n" +
+            "        <owl:Restriction>\n" +
+            "            <owl:onProperty rdf:resource=\"spl:hasProcessing\"/>\n" +
+            "            <owl:someValuesFrom rdf:resource=\"" + this.processingCollection + "\"/>\n" +
+            "        </owl:Restriction>\n" +
+            "        <owl:Restriction>\n" +
+            "            <owl:onProperty rdf:resource=\"spl:hasPurpose\"/>\n" +
+            "            <owl:someValuesFrom rdf:resource=\"" + this.purposeCollection + "\"/>\n" +
+            "        </owl:Restriction>\n" +
+            "        <owl:Restriction>\n" +
+            "            <owl:onProperty rdf:resource=\"spl:hasRecipient\"/>\n" +
+            "            <owl:someValuesFrom rdf:resource=\"" + this.recipientCollection + "\"/>\n" +
+            "        </owl:Restriction>\n" +
+            "        <owl:Restriction>\n" +
+            "            <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
+            "            <owl:someValuesFrom rdf:resource=\"" + this.storageCollection + "\"/>\n" +
+            "        </owl:Restriction>\n" +
+            "    </owl:intersectionOf>\n" +
+            "</owl:Class>\n";
     }
 }

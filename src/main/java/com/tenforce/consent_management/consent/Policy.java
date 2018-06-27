@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by langens-jonathan on 3/28/18.
@@ -40,11 +41,12 @@ public class Policy {
     }
 
     public String toString() {
-        String toreturn = "\n                <owl:unionOf rdf:parseType=\"Collection\">\n";
-        for(SimplePolicy policy : this.simplePolicies) {
-            toreturn += policy.toString();
-        }
-        toreturn += "                </owl:unionOf>\n";
-        return toreturn;
+        String simplePolicies = this.simplePolicies.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining());
+        return "\n" +
+                "    <owl:unionOf rdf:parseType=\"Collection\">\n" +
+                "        " + simplePolicies +
+                "    </owl:unionOf>\n";
     }
 }
