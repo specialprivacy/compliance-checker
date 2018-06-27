@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -125,7 +127,12 @@ public class ComplianceChecker {
         blackList.add("Policies");
         Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
         Set<File> subFolders = new HashSet<File>();
-        for (File file : folder.listFiles()) {
+
+        File[] files = folder.listFiles();
+        if (files == null) return ontologies;
+        Arrays.sort(files); // files are not necessarily in lexographical order
+
+        for (File file : files) {
             if (file.isFile() && file.getName().endsWith(".owl")) {
                 ontologies.add(this.loadOntology(file.getAbsolutePath()));
             } else if(file.isDirectory()){
@@ -135,7 +142,7 @@ public class ComplianceChecker {
         if(loadSubFolders) {
             for (File subFolder : subFolders) {
                 if(!blackList.contains(subFolder.getName())) {
-                    ontologies.addAll(this.getAllOntologiesFromFolder(subFolder, loadSubFolders, blackList));
+                    ontologies.addAll(this.getAllOntologiesFromFolder(subFolder, true, blackList));
                 }
             }
         }
