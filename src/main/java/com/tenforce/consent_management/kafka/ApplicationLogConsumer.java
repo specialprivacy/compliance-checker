@@ -27,13 +27,13 @@ import java.util.Properties;
 public class ApplicationLogConsumer  extends ShutdownableThread {
     private final KafkaConsumer<String, String> consumer;
     private final String topic;
-    private static final Logger log = LoggerFactory.getLogger(PolicyConsumer.class);
+    private static final Logger log = LoggerFactory.getLogger(ApplicationLogConsumer.class);
 
     private CheckedComplianceLogProducer checkedComplianceLogProducer = null;
     private ComplianceService complianceService = null;
 
     public ApplicationLogConsumer(String topic) {
-        super("KafkaPolicyConsumer", false);
+        super("ApplicationLogConsumer", false);
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Configuration.getKafkaURLList());
         props.put(ConsumerConfig.GROUP_ID_CONFIG, Configuration.getKafkaClientID());

@@ -42,9 +42,11 @@ public class PolicyConsumer extends ShutdownableThread {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
-        consumer = new KafkaConsumer<String, String>(props);
+        consumer = new KafkaConsumer<>(props);
         this.topic = topic;
         consumer.subscribe(Collections.singletonList(this.topic));
+        consumer.poll(10000);
+        consumer.seekToBeginning(consumer.assignment());
     }
 
     @Override

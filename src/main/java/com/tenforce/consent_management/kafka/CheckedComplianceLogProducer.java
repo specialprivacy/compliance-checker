@@ -2,6 +2,8 @@ package com.tenforce.consent_management.kafka;
 
 import com.tenforce.consent_management.config.Configuration;
 import org.apache.kafka.clients.producer.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
@@ -12,6 +14,7 @@ import java.util.Properties;
  * the corresponding kafka topic.
  */
 public class CheckedComplianceLogProducer extends Thread {
+    private final static Logger log = LoggerFactory.getLogger(CheckedComplianceLogProducer.class);
     private KafkaProducer<String, String> producer;
     private String topic;
     private Boolean isAsync;
@@ -38,7 +41,7 @@ public class CheckedComplianceLogProducer extends Thread {
         } else {
             try {
                 producer.send(new ProducerRecord<String, String>(topic, key, value));
-                System.out.println("Sent message: (" + key + ", " + value + ")");
+                log.info("Sent message: (key: {}, value: {})", key, value);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -47,6 +50,7 @@ public class CheckedComplianceLogProducer extends Thread {
 }
 
 class ProducerCallBack implements Callback {
+    private static final Logger log = LoggerFactory.getLogger(ProducerCallBack.class);
     private String key;
     private String value;
 
@@ -57,10 +61,7 @@ class ProducerCallBack implements Callback {
 
     public void onCompletion(RecordMetadata metadata, Exception exception) {
         if (metadata != null) {
-            System.out.println(
-                    "message(" + key + ", " + value + ") sent to partition(" + metadata.partition() +
-                            "), " +
-                            "offset(" + metadata.offset());
+            log.info("Sent message: (key: {}, value: {})", key, value);
         } else {
             exception.printStackTrace();
         }
