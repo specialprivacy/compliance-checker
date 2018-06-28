@@ -36,6 +36,7 @@ public class PolicyConsumer extends ShutdownableThread {
         // Every instance of the compliance checker should consume all of the user policies in the current setup
         props.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
 
@@ -45,8 +46,6 @@ public class PolicyConsumer extends ShutdownableThread {
         consumer = new KafkaConsumer<>(props);
         this.topic = topic;
         consumer.subscribe(Collections.singletonList(this.topic));
-        consumer.poll(10000);
-        consumer.seekToBeginning(consumer.assignment());
     }
 
     @Override
