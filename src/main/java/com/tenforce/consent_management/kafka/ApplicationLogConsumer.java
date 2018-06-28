@@ -45,7 +45,7 @@ public class ApplicationLogConsumer  extends ShutdownableThread {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
-        consumer = new KafkaConsumer<String, String>(props);
+        consumer = new KafkaConsumer<>(props);
         this.topic = topic;
         consumer.subscribe(Collections.singletonList(this.topic));
     }

@@ -25,7 +25,7 @@ public class CheckedComplianceLogProducer extends Thread {
         properties.put(ProducerConfig.CLIENT_ID_CONFIG, Configuration.getKafkaClientID());
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-        producer = new KafkaProducer<String, String>(properties);
+        producer = new KafkaProducer<>(properties);
         this.topic = topic;
         this.isAsync = isAsync;
     }
@@ -36,12 +36,12 @@ public class CheckedComplianceLogProducer extends Thread {
     public void sendMessage(String key, String value) {
         if (isAsync) {
             producer.send(
-                    new ProducerRecord<String, String>(topic, key, value),
+                    new ProducerRecord<>(topic, key, value),
                     new ProducerCallBack(key, value));
         } else {
             try {
-                producer.send(new ProducerRecord<String, String>(topic, key, value));
-                log.info("Sent message: (key: {}, value: {})", key, value);
+                producer.send(new ProducerRecord<>(topic, key, value));
+                log.debug("Sent message: (key: {}, value: {})", key, value);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -61,7 +61,7 @@ class ProducerCallBack implements Callback {
 
     public void onCompletion(RecordMetadata metadata, Exception exception) {
         if (metadata != null) {
-            log.info("Sent message: (key: {}, value: {})", key, value);
+            log.debug("Sent message: (key: {}, value: {})", key, value);
         } else {
             exception.printStackTrace();
         }
