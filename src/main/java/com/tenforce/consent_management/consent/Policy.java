@@ -1,9 +1,13 @@
 package com.tenforce.consent_management.consent;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -20,6 +24,8 @@ public class Policy {
     private long timestamp;
     private String userID;
     private List<SimplePolicy> simplePolicies = new ArrayList<SimplePolicy>();
+
+    private static final OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
 
     public long getTimestamp() {
         return timestamp;
@@ -40,13 +46,10 @@ public class Policy {
         this.simplePolicies = simplePolicies;
     }
 
-    public String toString() {
-        String simplePolicies = this.simplePolicies.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining());
-        return "\n" +
-                "    <owl:unionOf rdf:parseType=\"Collection\">\n" +
-                "        " + simplePolicies +
-                "    </owl:unionOf>\n";
+    public OWLClassExpression toOWL() {
+        Set<OWLClassExpression> expressions = this.simplePolicies.stream()
+               .map(SimplePolicy::toOWL)
+               .collect(Collectors.toSet());
+        return dataFactory.getOWLObjectUnionOf(expressions);
     }
 }

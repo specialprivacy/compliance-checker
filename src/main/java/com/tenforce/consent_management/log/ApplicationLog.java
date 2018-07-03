@@ -2,7 +2,14 @@ package com.tenforce.consent_management.log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tenforce.consent_management.compliance.ComplianceChecker;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,71 +50,26 @@ public class ApplicationLog {
     private List<String> data;
     private boolean hasConsent = false;
 
-    public String generateOWLConsentClass() {
-        String owlDataItems = this.data.stream()
-                .map(a -> String.format("<rdf:Description rdf:about=\"%s\"/>\n", a))
-                .collect(Collectors.joining());
-        String owlDataRestriction = "<owl:Restriction>" +
-                "<owl:onProperty rdf:resource=\"hasData\"/>" +
-               "<owl:someValuesFrom>" +
-                "<owl:Class><owl:intersectionOf rdf:parseType=\"Collection\">" +
-                owlDataItems +
-                "</owl:intersectionOf></owl:Class>" +
-                "</owl:someValuesFrom>" +
-                "</owl:Restriction>";
-        return "<?xml version=\"1.0\"?>\n" +
-                "<rdf:RDF xmlns=\"http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16#\"\n" +
-                "     xml:base=\"http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16\"\n" +
-                "     xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n" +
-                "     xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n" +
-                "     xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"\n" +
-                "     xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n" +
-                "     xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n" +
-                "    <owl:Ontology rdf:about=\"http://www.semanticweb.org/langens-jonathan/ontologies/policies/data-controller-policies\">\n" +
-                "        <owl:imports rdf:resource=\"http://www.specialprivacy.eu/vocabs/recipients\"/>\n" +
-                "        <owl:imports rdf:resource=\"http://www.specialprivacy.eu/vocabs/purposes\"/>\n" +
-                "        <owl:imports rdf:resource=\"http://www.specialprivacy.eu/vocabs/duration\"/>\n" +
-                "        <owl:imports rdf:resource=\"http://www.specialprivacy.eu/vocabs/data\"/>\n" +
-                "        <owl:imports rdf:resource=\"http://www.specialprivacy.eu/vocabs/locations\"/>\n" +
-                "        <owl:imports rdf:resource=\"http://www.specialprivacy.eu/vocabs/processing\"/>\n" +
-                "        <owl:imports rdf:resource=\"http://www.semanticweb.org/langens-jonathan/ontologies/data-property-ontology\"/>\n" +
-                "    </owl:Ontology>\n" +
-                "    \n" +
-                "\n" +
-                "    <!-- " + ComplianceChecker.getDataControllerPolicyClassName("InMemory") + "-->\n" +
-                "\n" +
-                "    <owl:Class rdf:about=\"" + ComplianceChecker.getDataControllerPolicyClassName("InMemory") + "\">\n" +
-                "        <owl:equivalentClass>\n" +
-                "            <owl:Class>\n" +
-                "                <owl:intersectionOf rdf:parseType=\"Collection\">\n" +
-                "                    " + owlDataRestriction +
-                "                    <owl:Restriction>\n" +
-                "                        <owl:onProperty rdf:resource=\"spl:hasRecipient\"/>\n" +
-                "                        <owl:someValuesFrom rdf:resource=\"" + this.recipient + "\"/>\n" +
-                "                    </owl:Restriction>\n" +
-                "                    <owl:Restriction>\n" +
-                "                        <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
-                "                        <owl:someValuesFrom rdf:resource=\"" + this.storage + "\"/>\n" +
-                "                    </owl:Restriction>\n" +
-                "                    <owl:Restriction>\n" +
-                "                        <owl:onProperty rdf:resource=\"spl:hasProcessing\"/>\n" +
-                "                        <owl:someValuesFrom rdf:resource=\"" + this.processing + "\"/>\n" +
-                "                    </owl:Restriction>\n" +
-                "                    <owl:Restriction>\n" +
-                "                        <owl:onProperty rdf:resource=\"spl:hasPurpose\"/>\n" +
-                "                        <owl:someValuesFrom rdf:resource=\"" + this.purpose + "\"/>\n" +
-                "                    </owl:Restriction>\n" +
-                "                </owl:intersectionOf>\n" +
-                "            </owl:Class>\n" +
-                "        </owl:equivalentClass>\n" +
-                "        <rdfs:subClassOf rdf:resource=\"http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16#DataControllerPolicies\"/>\n" +
-                "    </owl:Class>\n" +
-                "</rdf:RDF>\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "<!-- Generated by the TenForce User Policy Creator -->\n" +
-                "\n";
+    private static final OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
+
+    private static final String SPL = "http://www.specialprivacy.eu/langs/usage-policy#";
+    private static final OWLObjectProperty HAS_DATA = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasData"));
+    private static final OWLObjectProperty HAS_PROCESSING = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasProcessing"));
+    private static final OWLObjectProperty HAS_PURPOSE = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasPurpose"));
+    private static final OWLObjectProperty HAS_RECIPIENT = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasRecipient"));
+    private static final OWLObjectProperty HAS_STORAGE = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasStorage"));
+
+    public OWLClassExpression toOWL() {
+        Set<OWLClassExpression> dataRestrictions = this.data.stream()
+                .map(a -> dataFactory.getOWLClass(IRI.create(a)))
+                .collect(Collectors.toSet());
+        return dataFactory.getOWLObjectIntersectionOf(
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_DATA, dataFactory.getOWLObjectIntersectionOf(dataRestrictions)),
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_PROCESSING, dataFactory.getOWLClass(IRI.create(this.processing))),
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_PURPOSE, dataFactory.getOWLClass(IRI.create(this.purpose))),
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_RECIPIENT, dataFactory.getOWLClass(IRI.create(this.recipient))),
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_STORAGE, dataFactory.getOWLClass(IRI.create(this.storage)))
+        );
     }
 
     public long getTimestamp() {
