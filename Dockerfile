@@ -4,13 +4,13 @@ LABEL author="Jonathan Langens <jonathan.langens@tenforce.com>"
 ENV COMPLIANCECHECKERVERSION=0.1
 WORKDIR /app
 COPY . /app
-RUN mvn clean install
+RUN mvn clean package
 
-FROM tomcat:9-jre8-alpine
-WORKDIR /usr/local/tomcat/webapps
-RUN apk add --update libc6-compat
-RUN rm -rf ./ROOT/ 
+FROM openjdk:8-alpine
+WORKDIR /app
+CMD ["java", "-jar", "/app/compliance-checker.jar"]
 ENV COMPLIANCECHECKERVERSION=0.1
-COPY --from=build /app/target/COMPLIANCECHECKER-${COMPLIANCECHECKERVERSION}.war ./ROOT.war
-COPY rules /rules
 ENV RULES_DIRECTORY=/rules
+COPY rules /rules
+RUN apk add --update libc6-compat
+COPY --from=build /app/target/ComplianceChecker-${COMPLIANCECHECKERVERSION}.jar ./compliance-checker.jar
