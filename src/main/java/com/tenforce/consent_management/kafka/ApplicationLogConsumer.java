@@ -6,11 +6,11 @@ import com.tenforce.consent_management.compliance.HermiTReasonerFactory;
 import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.PolicyStore;
 import com.tenforce.consent_management.log.ApplicationLog;
-import kafka.utils.ShutdownableThread;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.errors.WakeupException;
 import org.rocksdb.RocksDBException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -27,7 +27,7 @@ import java.util.Properties;
  *
  * After that it checks the consent for every access.
  */
-public class ApplicationLogConsumer  extends ShutdownableThread {
+public class ApplicationLogConsumer  implements Runnable {
     private final KafkaConsumer<String, String> consumer;
     private final String topic;
     private static final Logger log = LoggerFactory.getLogger(ApplicationLogConsumer.class);
@@ -40,7 +40,6 @@ public class ApplicationLogConsumer  extends ShutdownableThread {
     private final PolicyStore policyStore = PolicyStore.getInstance();
 
     public ApplicationLogConsumer(String topic) throws RocksDBException, OWLOntologyCreationException {
-        super("ApplicationLogConsumer", false);
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Configuration.getKafkaURLList());
         props.put(ConsumerConfig.GROUP_ID_CONFIG, Configuration.getKafkaClientID());
@@ -54,44 +53,54 @@ public class ApplicationLogConsumer  extends ShutdownableThread {
 
         consumer = new KafkaConsumer<>(props);
         this.topic = topic;
-        consumer.subscribe(Collections.singletonList(this.topic));
     }
 
     @Override
-    public void doWork() {
-        ConsumerRecords<String, String> records = consumer.poll(1000);
-        for (ConsumerRecord<String, String> record : records) {
-            log.debug("Processing (topic: {}, partition: {}, offset: {})", this.topic, record.partition(), record.offset());
-            if(this.checkedComplianceLogProducer != null) {
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    ApplicationLog alog= mapper.readValue(record.value(), ApplicationLog.class);
-                    OWLClassExpression logClass = alog.toOWL();
-                    OWLClassExpression policyClass = policyStore.getPolicy(alog.getUserID());
-                    alog.setHasConsent(policyClass != null && complianceChecker.hasConsent(logClass, policyClass));
-                    this.checkedComplianceLogProducer.sendMessage(alog.getEventID(), mapper.writeValueAsString(alog));
-                } catch (IOException e) {
-                    log.error("Failed to parse kafka message");
-                    e.printStackTrace();
-                } catch (RocksDBException e) {
-                    log.error("Failed to read policy from rocksdb");
-                    e.printStackTrace();
+    public void run() {
+        try {
+            consumer.subscribe(Collections.singletonList(this.topic));
+
+            while (true) {
+                ConsumerRecords<String, String> records = consumer.poll(1000);
+                for (ConsumerRecord<String, String> record : records) {
+                    log.debug("Processing (topic: {}, partition: {}, offset: {})", this.topic, record.partition(), record.offset());
+                    if(this.checkedComplianceLogProducer != null) {
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            ApplicationLog alog= mapper.readValue(record.value(), ApplicationLog.class);
+                            OWLClassExpression logClass = alog.toOWL();
+                            OWLClassExpression policyClass = policyStore.getPolicy(alog.getUserID());
+                            alog.setHasConsent(policyClass != null && complianceChecker.hasConsent(logClass, policyClass));
+                            this.checkedComplianceLogProducer.sendMessage(alog.getEventID(), mapper.writeValueAsString(alog));
+                        } catch (IOException e) {
+                            log.error("Failed to parse kafka message");
+                            e.printStackTrace();
+                        } catch (RocksDBException e) {
+                            // TODO: we should probably die here, because without rocksdb we cannot sucessfully process the message
+                            log.error("Failed to read policy from rocksdb");
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
+        } catch (WakeupException e) {
+            // Ignore for shutdown
+        } finally {
+            log.info("Closing kafka consumer");
+            consumer.close();
+            log.info("Done closing kafka consumer");
         }
-    }
-
-    @Override
-    public String name() {
-        return null;
-    }
-
-    @Override
-    public boolean isInterruptible() {
-        return false;
     }
 
     public void setCheckedComplianceLogProducer(CheckedComplianceLogProducer checkedComplianceLogProducer) {
         this.checkedComplianceLogProducer = checkedComplianceLogProducer;
+    }
+
+    /**
+     * Call this to stop processing messages, cleanly shutdown the kafka consumer and stop the thread
+     */
+    public void shutdown() {
+        log.info("Received request to stop");
+        consumer.wakeup();
     }
 }
