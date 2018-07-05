@@ -1,7 +1,11 @@
 package com.tenforce.consent_management.config;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
+
 /**
  * Created by langens-jonathan on 4/10/18. This file is only here to facilitate
  * getting configuration settings. It lazy loads settings and loads them only once.
@@ -10,140 +14,137 @@ import org.slf4j.LoggerFactory;
  * a pattern I prefer more.
  */
 public class Configuration {
-    private static boolean instantiated = false;
     private static Logger log = LoggerFactory.getLogger(Configuration.class);
 
-    // the base of the policy class name
-    private static String policyClassBase;
-
     // the directory where the rule files are to be stored
-    private static String rulesDirectory;
+    private String rulesDirectory = "/rules";
 
     // everything kafka
-    private static String kafkaURLList;
-    private static String kafkaClientID;
-    private static String kafkaTopicPolicy;
-    private static String kafkaTopicAccess;
-    private static String kafkaTopicConsent;
+    private String kafkaURLList = "localhost:9092";
+    private String kafkaClientID = UUID.randomUUID().toString();
+    private String kafkaTopicPolicy = "full-policies";
+    private String kafkaTopicAccess = "accesses";
+    private String kafkaTopicConsent = "consents";
 
     // the names of the environment variables
-    private static String POLICY_CLASS_BASE = "POLICY_CLASS_BASE";
-    private static String RULES_DIRECTORY = "RULES_DIRECTORY";
-    private static String KAFKA_URL_LIST = "KAFKA_URL_LIST";
-    private static String KAFKA_CLIENT_ID = "KAFKA_CLIENT_ID";
-    private static String KAFKA_TOPIC_POLICY = "KAFKA_TOPIC_POLICY";
-    private static String KAFKA_TOPIC_ACCESS = "KAFKA_TOPIC_ACCESS";
-    private static String KAFKA_TOPIC_CONSENT = "KAFKA_TOPIC_CONSENT";
+    private static final String RULES_DIRECTORY = "RULES_DIRECTORY";
+    private static final String KAFKA_URL_LIST = "KAFKA_URL_LIST";
+    private static final String KAFKA_CLIENT_ID = "KAFKA_CLIENT_ID";
+    private static final String KAFKA_TOPIC_POLICY = "KAFKA_TOPIC_POLICY";
+    private static final String KAFKA_TOPIC_ACCESS = "KAFKA_TOPIC_ACCESS";
+    private static final String KAFKA_TOPIC_CONSENT = "KAFKA_TOPIC_CONSENT";
 
-    // instantiates the variables
-    // should include validity checking
-    private static void instantiate() {
-        if(Configuration.instantiated) return;
-        Configuration.instantiatePolicyClassBase();
-        Configuration.instantiateRulesDirectory();
-        Configuration.instantiateKafkaURLList();
-        Configuration.instantiateKafkaClientID();
-        Configuration.instantiateKafkaTopicAccess();
-        Configuration.instantiateKafkaTopicConsent();
-        Configuration.instantiateKafkaTopicPolicy();
-        Configuration.instantiated = true;
-        log.info("Configuration policyClassBase: {}", policyClassBase);
-        log.info("Configuration rulesDirectory: {}", rulesDirectory);
-        log.info("Configuration kafkaURLList: {}", kafkaURLList);
-        log.info("Configuration kafkaClientID: {}", kafkaClientID);
-        log.info("Configuration kafkaTopicPolicy: {}", kafkaTopicPolicy);
-        log.info("Configuration kafkaTopicAccess: {}", kafkaTopicAccess);
-        log.info("Configuration kafkaTopicConsent: {}", kafkaTopicConsent);
-    }
+    public static Configuration loadFromEnvironment() {
+        Configuration config = new Configuration();
 
-    private static void instantiatePolicyClassBase() {
-        if(System.getenv().containsKey(Configuration.POLICY_CLASS_BASE)) {
-            Configuration.policyClassBase = System.getenv(Configuration.POLICY_CLASS_BASE);
-        } else {
-            Configuration.policyClassBase = "http://www.semanticweb.org/langens-jonathan/ontologies/2018/2/untitled-ontology-16#";
-        }
-    }
-
-    private static void instantiateRulesDirectory() {
         if(System.getenv().containsKey(Configuration.RULES_DIRECTORY)) {
-            Configuration.rulesDirectory = System.getenv(Configuration.RULES_DIRECTORY);
-        } else {
-            Configuration.rulesDirectory = "/policies";
+            config.setRulesDirectory(System.getenv(Configuration.RULES_DIRECTORY));
         }
-    }
 
-    private static void instantiateKafkaURLList() {
         if(System.getenv().containsKey(Configuration.KAFKA_URL_LIST)) {
-            Configuration.kafkaURLList = System.getenv(Configuration.KAFKA_URL_LIST);
-        } else {
-            Configuration.kafkaURLList = "";
+            config.setKafkaURLList(System.getenv(Configuration.KAFKA_URL_LIST));
         }
-    }
 
-    private static void instantiateKafkaClientID() {
         if(System.getenv().containsKey(Configuration.KAFKA_CLIENT_ID)) {
-            Configuration.kafkaClientID = System.getenv(Configuration.KAFKA_CLIENT_ID);
-        } else {
-            Configuration.kafkaClientID = "";
+            config.setKafkaClientID(System.getenv(Configuration.KAFKA_CLIENT_ID));
         }
-    }
 
-    private static void instantiateKafkaTopicPolicy() {
         if(System.getenv().containsKey(Configuration.KAFKA_TOPIC_POLICY)) {
-            Configuration.kafkaTopicPolicy = System.getenv(Configuration.KAFKA_TOPIC_POLICY);
-        } else {
-            Configuration.kafkaTopicPolicy = "full-policies";
+            config.setKafkaTopicPolicy(System.getenv(Configuration.KAFKA_TOPIC_POLICY));
         }
-    }
 
-    private static void instantiateKafkaTopicAccess() {
         if(System.getenv().containsKey(Configuration.KAFKA_TOPIC_ACCESS)) {
-            Configuration.kafkaTopicAccess = System.getenv(Configuration.KAFKA_TOPIC_ACCESS);
-        } else {
-            Configuration.kafkaTopicAccess = "accesses";
+            config.setKafkaTopicAccess(System.getenv(Configuration.KAFKA_TOPIC_ACCESS));
         }
-    }
 
-    private static void instantiateKafkaTopicConsent() {
         if(System.getenv().containsKey(Configuration.KAFKA_TOPIC_CONSENT)) {
-            Configuration.kafkaTopicConsent = System.getenv(Configuration.KAFKA_TOPIC_CONSENT);
-        } else {
-            Configuration.kafkaTopicConsent = "consents";
+            config.setKafkaTopicConsent(System.getenv(Configuration.KAFKA_TOPIC_CONSENT));
         }
+
+        return config;
     }
 
-    // getters, all lazy
-    public static String getPolicyClassBase() {
-        Configuration.instantiate();
-        return Configuration.policyClassBase;
+    @Override
+    public String toString() {
+        return "{\"rulesDirectory\": \"" + rulesDirectory + "\", " +
+                "\"kafkaURLList\": \"" + kafkaURLList + "\", " +
+                "\"kafkaClientID\": \"" + kafkaClientID + "\", " +
+                "\"kafkaTopicPolicy\": \"" + kafkaTopicPolicy + "\", " +
+                "\"kafkaTopicAccess\": \"" + kafkaTopicAccess + "\", " +
+                "\" kafkaTopicConsent\": \"" + kafkaTopicConsent + "\"}";
     }
 
-    public static String getRulesDirectory() {
-        Configuration.instantiate();
-        return Configuration.rulesDirectory;
-    }
-    public static String getKafkaURLList() {
-        Configuration.instantiate();
-        return Configuration.kafkaURLList;
-    }
-
-    public static String getKafkaClientID() {
-        Configuration.instantiate();
-        return Configuration.kafkaClientID;
+    // setters: this where the input validation should happen so we can ensure only correct values are written
+    public void setRulesDirectory(@NotNull String rulesDirectory) {
+        if ("".equals(rulesDirectory)) {
+            throw new IllegalArgumentException("rulesDirectory cannot be an empty string");
+        }
+        this.rulesDirectory = rulesDirectory;
     }
 
-    public static String getKafkaTopicPolicy() {
-        Configuration.instantiate();
-        return Configuration.kafkaTopicPolicy;
+    public void setKafkaURLList(@NotNull String kafkaURLList) {
+        if ("".equals(kafkaURLList)) {
+            throw new IllegalArgumentException("kafkaURLList cannot be an empty string");
+        }
+        this.kafkaURLList = kafkaURLList;
     }
 
-    public static String getKafkaTopicAccess() {
-        Configuration.instantiate();
-        return Configuration.kafkaTopicAccess;
+    public void setKafkaClientID(@NotNull String kafkaClientID) {
+        if ("".equals(kafkaClientID)) {
+            throw new IllegalArgumentException("kafkaClientID cannot be an empty string");
+        }
+        this.kafkaClientID = kafkaClientID;
     }
 
-    public static String getKafkaTopicConsent() {
-        Configuration.instantiate();
-        return Configuration.kafkaTopicConsent;
+    public void setKafkaTopicPolicy(@NotNull String kafkaTopicPolicy) {
+        if ("".equals(kafkaTopicPolicy)) {
+            throw new IllegalArgumentException("kafkaTopicPolicy cannot be an empty string");
+        }
+        this.kafkaTopicPolicy = kafkaTopicPolicy;
+    }
+
+    public void setKafkaTopicAccess(@NotNull String kafkaTopicAccess) {
+        if ("".equals(kafkaTopicAccess)) {
+            throw new IllegalArgumentException("kafkaTopicAccess cannot be an empty string");
+        }
+        this.kafkaTopicAccess = kafkaTopicAccess;
+    }
+
+    public void setKafkaTopicConsent(@NotNull String kafkaTopicConsent) {
+        if ("".equals(kafkaTopicConsent)) {
+            throw new IllegalArgumentException("kafkaTopicConsent cannot be an empty string");
+        }
+        this.kafkaTopicConsent = kafkaTopicConsent;
+    }
+
+    // getters
+    @NotNull
+    public String getRulesDirectory() {
+        return rulesDirectory;
+    }
+
+    @NotNull
+    public String getKafkaURLList() {
+        return kafkaURLList;
+    }
+
+    @NotNull
+    public String getKafkaClientID() {
+        return kafkaClientID;
+    }
+
+    @NotNull
+    public String getKafkaTopicPolicy() {
+        return kafkaTopicPolicy;
+    }
+
+    @NotNull
+    public String getKafkaTopicAccess() {
+        return kafkaTopicAccess;
+    }
+
+    @NotNull
+    public String getKafkaTopicConsent() {
+        return kafkaTopicConsent;
     }
 }

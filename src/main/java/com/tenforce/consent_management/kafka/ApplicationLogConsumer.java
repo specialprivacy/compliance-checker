@@ -9,6 +9,7 @@ import com.tenforce.consent_management.log.ApplicationLog;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.*;
+import org.jetbrains.annotations.NotNull;
 import org.rocksdb.RocksDBException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -29,29 +30,27 @@ public class ApplicationLogConsumer  extends BaseConsumer {
     private final String producerTopic;
     private static final Logger log = LoggerFactory.getLogger(ApplicationLogConsumer.class);
 
-    private final ComplianceChecker complianceChecker = new ComplianceChecker(
-            new HermiTReasonerFactory(),
-            Configuration.getRulesDirectory()
-    );
+    private final ComplianceChecker complianceChecker;
     private final PolicyStore policyStore = PolicyStore.getInstance();
 
-    public ApplicationLogConsumer(String consumerTopic, String producerTopic) throws RocksDBException, OWLOntologyCreationException {
-        super(consumerTopic, getConsumerProperties());
+    public ApplicationLogConsumer(@NotNull Configuration config) throws RocksDBException, OWLOntologyCreationException {
+        super(config.getKafkaTopicAccess(), getConsumerProperties(config));
 
         Properties producerProps = new Properties();
-        producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Configuration.getKafkaURLList());
-        producerProps.put(ProducerConfig.CLIENT_ID_CONFIG, Configuration.getKafkaClientID());
+        producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getKafkaURLList());
+        producerProps.put(ProducerConfig.CLIENT_ID_CONFIG, config.getKafkaClientID());
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 
         producer = new KafkaProducer<>(producerProps);
-        this.producerTopic = producerTopic;
+        this.producerTopic = config.getKafkaTopicConsent();
+        complianceChecker = new ComplianceChecker(new HermiTReasonerFactory(), config.getRulesDirectory());
     }
 
-    private static Properties getConsumerProperties() {
+    private static Properties getConsumerProperties(@NotNull Configuration config) {
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Configuration.getKafkaURLList());
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, Configuration.getKafkaClientID());
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getKafkaURLList());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, config.getKafkaClientID());
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         return props;
     }

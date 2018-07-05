@@ -5,6 +5,7 @@ import com.tenforce.consent_management.consent.Policy;
 import com.tenforce.consent_management.consent.PolicyStore;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.jetbrains.annotations.NotNull;
 import org.rocksdb.RocksDBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +24,14 @@ public class PolicyConsumer extends BaseConsumer {
     private final PolicyStore policyStore = PolicyStore.getInstance();
     private static final Logger log = LoggerFactory.getLogger(PolicyConsumer.class);
 
-    public PolicyConsumer(String topic) throws RocksDBException {
-        super(topic, getConsumerProperties());
+    public PolicyConsumer(@NotNull Configuration config) throws RocksDBException {
+        super(config.getKafkaTopicPolicy(), getConsumerProperties(config));
     }
 
-    private static Properties getConsumerProperties() {
+    private static Properties getConsumerProperties(@NotNull Configuration config) {
         Properties props = new Properties();
 
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Configuration.getKafkaURLList());
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getKafkaURLList());
         // Every instance of the compliance checker should consume all of the user policies in the current setup
         props.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");

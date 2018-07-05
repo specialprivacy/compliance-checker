@@ -20,8 +20,12 @@ public class Main {
     public static void main(String[] args) {
         log.info("Compliance checker starting up");
         try {
-            policyConsumer = new PolicyConsumer(Configuration.getKafkaTopicPolicy());
-            applicationLogConsumer = new ApplicationLogConsumer(Configuration.getKafkaTopicAccess(), Configuration.getKafkaTopicConsent());
+            // Eagerly load and validate the config. We want to show errors when the operator is still looking
+            Configuration config = Configuration.loadFromEnvironment();
+            log.info("Using configuration: {}", config);
+
+            policyConsumer = new PolicyConsumer(config);
+            applicationLogConsumer = new ApplicationLogConsumer(config);
 
             final ExecutorService executor = Executors.newFixedThreadPool(2);
             executor.submit(policyConsumer);
@@ -42,6 +46,9 @@ public class Main {
                     e.printStackTrace();
                 }
             }));
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
+            Runtime.getRuntime().exit(1);
         } catch (Exception e) {
             log.error("Failed to initialize services");
             e.printStackTrace();
