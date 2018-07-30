@@ -1,6 +1,9 @@
 package com.tenforce.consent_management.consent;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tenforce.consent_management.config.Configuration;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.*;
 
 /**
  * Created by langens-jonathan on 3/28/18.
@@ -25,6 +28,15 @@ public class SimplePolicy {
     private String recipientCollection;
 
     private String storageCollection;
+
+    private static final OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
+
+    private static final String SPL = "http://www.specialprivacy.eu/langs/usage-policy#";
+    private static final OWLObjectProperty HAS_DATA = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasData"));
+    private static final OWLObjectProperty HAS_PROCESSING = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasProcessing"));
+    private static final OWLObjectProperty HAS_PURPOSE = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasPurpose"));
+    private static final OWLObjectProperty HAS_RECIPIENT = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasRecipient"));
+    private static final OWLObjectProperty HAS_STORAGE = dataFactory.getOWLObjectProperty(IRI.create(SPL + "hasStorage"));
 
     public SimplePolicy(String dataCollection, String processingCollection, String purposeCollection, String recipientCollection, String storageCollection) {
         this.dataCollection = dataCollection;
@@ -88,30 +100,13 @@ public class SimplePolicy {
         );
     }
 
-    public String toString() {
-        return "<owl:Class>\n" +
-            "    <owl:intersectionOf rdf:parseType=\"Collection\">\n" +
-            "        <owl:Restriction>\n" +
-            "            <owl:onProperty rdf:resource=\"spl:hasData\"/>\n" +
-            "            <owl:someValuesFrom rdf:resource=\"" + this.dataCollection + "\"/>\n" +
-            "        </owl:Restriction>\n" +
-            "        <owl:Restriction>\n" +
-            "            <owl:onProperty rdf:resource=\"spl:hasProcessing\"/>\n" +
-            "            <owl:someValuesFrom rdf:resource=\"" + this.processingCollection + "\"/>\n" +
-            "        </owl:Restriction>\n" +
-            "        <owl:Restriction>\n" +
-            "            <owl:onProperty rdf:resource=\"spl:hasPurpose\"/>\n" +
-            "            <owl:someValuesFrom rdf:resource=\"" + this.purposeCollection + "\"/>\n" +
-            "        </owl:Restriction>\n" +
-            "        <owl:Restriction>\n" +
-            "            <owl:onProperty rdf:resource=\"spl:hasRecipient\"/>\n" +
-            "            <owl:someValuesFrom rdf:resource=\"" + this.recipientCollection + "\"/>\n" +
-            "        </owl:Restriction>\n" +
-            "        <owl:Restriction>\n" +
-            "            <owl:onProperty rdf:resource=\"spl:hasStorage\"/>\n" +
-            "            <owl:someValuesFrom rdf:resource=\"" + this.storageCollection + "\"/>\n" +
-            "        </owl:Restriction>\n" +
-            "    </owl:intersectionOf>\n" +
-            "</owl:Class>\n";
+    public OWLClassExpression toOWL() {
+        return dataFactory.getOWLObjectIntersectionOf(
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_DATA, dataFactory.getOWLClass(IRI.create(this.dataCollection))),
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_PROCESSING, dataFactory.getOWLClass(IRI.create(this.processingCollection))),
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_PURPOSE, dataFactory.getOWLClass(IRI.create(this.purposeCollection))),
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_RECIPIENT, dataFactory.getOWLClass(IRI.create(this.recipientCollection))),
+                dataFactory.getOWLObjectSomeValuesFrom(HAS_STORAGE, dataFactory.getOWLClass(IRI.create(this.storageCollection)))
+        );
     }
 }
