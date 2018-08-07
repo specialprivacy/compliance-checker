@@ -24,6 +24,9 @@ public class Main {
             Configuration config = Configuration.loadFromEnvironment();
             log.info("Using configuration: {}", config);
 
+            ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+            root.setLevel(config.getLoggingLevel());
+
             policyConsumer = new PolicyConsumer(config);
             applicationLogConsumer = new ApplicationLogConsumer(config);
 

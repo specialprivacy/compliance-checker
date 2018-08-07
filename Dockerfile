@@ -1,5 +1,6 @@
 FROM maven:3.5-jdk-8-alpine AS build
 LABEL author="Jonathan Langens <jonathan.langens@tenforce.com>"
+LABEL author="Wouter Dullaert <wouter.dullaert@tenforce.com>"
 
 ENV COMPLIANCECHECKERVERSION=0.1
 WORKDIR /app

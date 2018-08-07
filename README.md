@@ -8,6 +8,7 @@ A docker image is available at `registry-special.tenforce.com/special/complaince
 
 Configuration is passed in through environment variables:
 
+* *LOGGING_LEVEL*: the verbosity of the logs (oneOf: [`trace`, `debug`, `info`, `warn`, `error`], default: `info`)
 * *RULES_DIRECTORY*: the directory containing the rules (default: `/rules`)
 * *KAFKA_URL_LIST*: A comma separated list of kafka brokers to bootstrap the connection to the cluster (default: `localhost:9092`)
 * *KAFKA_CLIENT_ID*: The clientId used for grouping multiple instances of this app together in a single consumer group (default: `UUID.randomUUID()`)
@@ -35,7 +36,6 @@ docker build .
 * Tests
 * Add support for Piero's custom algorithm
 * Add support for time dimension on logs and policies (logs should be checked with the policy valid at the proper time)
-* Move vocabulary constants into an enum that can be shared
 * Reevaluate package structure
 * Preallocate buffer when reading from rocksdb
 * Better error handling, manual offset committing, in ApplicationLogConsumer (see todo's in code)

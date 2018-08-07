@@ -1,9 +1,13 @@
 package com.tenforce.consent_management.config;
 
+import ch.qos.logback.classic.Level;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -25,6 +29,7 @@ public class Configuration {
     private String kafkaTopicPolicy = "full-policies";
     private String kafkaTopicAccess = "accesses";
     private String kafkaTopicConsent = "consents";
+    private Level loggingLevel = Level.INFO;
 
     // the names of the environment variables
     private static final String RULES_DIRECTORY = "RULES_DIRECTORY";
@@ -33,32 +38,39 @@ public class Configuration {
     private static final String KAFKA_TOPIC_POLICY = "KAFKA_TOPIC_POLICY";
     private static final String KAFKA_TOPIC_ACCESS = "KAFKA_TOPIC_ACCESS";
     private static final String KAFKA_TOPIC_CONSENT = "KAFKA_TOPIC_CONSENT";
+    private static final String LOGGING_LEVEL = "LOGGING_LEVEL";
+
+    private static final List<String> LOGGING_LEVELS = Arrays.asList("trace", "debug", "info", "warn", "error");
 
     public static Configuration loadFromEnvironment() {
         Configuration config = new Configuration();
 
-        if(System.getenv().containsKey(Configuration.RULES_DIRECTORY)) {
+        if (System.getenv().containsKey(Configuration.RULES_DIRECTORY)) {
             config.setRulesDirectory(System.getenv(Configuration.RULES_DIRECTORY));
         }
 
-        if(System.getenv().containsKey(Configuration.KAFKA_URL_LIST)) {
+        if (System.getenv().containsKey(Configuration.KAFKA_URL_LIST)) {
             config.setKafkaURLList(System.getenv(Configuration.KAFKA_URL_LIST));
         }
 
-        if(System.getenv().containsKey(Configuration.KAFKA_CLIENT_ID)) {
+        if (System.getenv().containsKey(Configuration.KAFKA_CLIENT_ID)) {
             config.setKafkaClientID(System.getenv(Configuration.KAFKA_CLIENT_ID));
         }
 
-        if(System.getenv().containsKey(Configuration.KAFKA_TOPIC_POLICY)) {
+        if (System.getenv().containsKey(Configuration.KAFKA_TOPIC_POLICY)) {
             config.setKafkaTopicPolicy(System.getenv(Configuration.KAFKA_TOPIC_POLICY));
         }
 
-        if(System.getenv().containsKey(Configuration.KAFKA_TOPIC_ACCESS)) {
+        if (System.getenv().containsKey(Configuration.KAFKA_TOPIC_ACCESS)) {
             config.setKafkaTopicAccess(System.getenv(Configuration.KAFKA_TOPIC_ACCESS));
         }
 
-        if(System.getenv().containsKey(Configuration.KAFKA_TOPIC_CONSENT)) {
+        if (System.getenv().containsKey(Configuration.KAFKA_TOPIC_CONSENT)) {
             config.setKafkaTopicConsent(System.getenv(Configuration.KAFKA_TOPIC_CONSENT));
+        }
+
+        if (System.getenv().containsKey(Configuration.LOGGING_LEVEL)) {
+            config.setLoggingLevel(System.getenv(Configuration.LOGGING_LEVEL));
         }
 
         return config;
@@ -117,6 +129,13 @@ public class Configuration {
         this.kafkaTopicConsent = kafkaTopicConsent;
     }
 
+    public void setLoggingLevel(@NotNull String level) {
+        if (!LOGGING_LEVELS.contains(level.toLowerCase())) {
+            throw new IllegalArgumentException("loggingLevel must be one of: " + LOGGING_LEVELS);
+        }
+        this.loggingLevel = Level.toLevel(level, Level.INFO);
+    }
+
     // getters
     @NotNull
     public String getRulesDirectory() {
@@ -146,5 +165,10 @@ public class Configuration {
     @NotNull
     public String getKafkaTopicConsent() {
         return kafkaTopicConsent;
+    }
+
+    @NotNull
+    public Level getLoggingLevel() {
+        return loggingLevel;
     }
 }
