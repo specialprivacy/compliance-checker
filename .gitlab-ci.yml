@@ -33,3 +33,16 @@ release:
   only:
     - master
     - tags
+
+publish-vienna:
+  stage: release
+  variables:
+    GIT_STRATEGY: clone
+  script:
+    - eval $(ssh-agent -s)
+    - echo "${SSH_PRIVATE_KEY}" | ssh-add /dev/stdin
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - git push ${VIENNA_REMOTE} master
+  only:
+    - master
