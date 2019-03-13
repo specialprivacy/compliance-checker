@@ -2,11 +2,16 @@ package com.tenforce.consent_management.log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tenforce.consent_management.compliance.ComplianceChecker;
+import com.tenforce.consent_management.kafka.ApplicationLogConsumer;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -39,16 +44,16 @@ import java.util.stream.Collectors;
   */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ApplicationLog {
+    private String eventID;
     private long timestamp;
     private String process;
+    private String userID;
+    private boolean hasConsent = false;
     private String purpose;
     private String processing;
     private String recipient;
     private String storage;
-    private String userID;
-    private String eventID;
     private List<String> data;
-    private boolean hasConsent = false;
 
     private static final OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
 
@@ -63,6 +68,8 @@ public class ApplicationLog {
         Set<OWLClassExpression> dataRestrictions = this.data.stream()
                 .map(a -> dataFactory.getOWLClass(IRI.create(a)))
                 .collect(Collectors.toSet());
+        
+
         return dataFactory.getOWLObjectIntersectionOf(
                 dataFactory.getOWLObjectSomeValuesFrom(HAS_DATA, dataFactory.getOWLObjectIntersectionOf(dataRestrictions)),
                 dataFactory.getOWLObjectSomeValuesFrom(HAS_PROCESSING, dataFactory.getOWLClass(IRI.create(this.processing))),
@@ -70,6 +77,7 @@ public class ApplicationLog {
                 dataFactory.getOWLObjectSomeValuesFrom(HAS_RECIPIENT, dataFactory.getOWLClass(IRI.create(this.recipient))),
                 dataFactory.getOWLObjectSomeValuesFrom(HAS_STORAGE, dataFactory.getOWLClass(IRI.create(this.storage)))
         );
+
     }
 
     public long getTimestamp() {

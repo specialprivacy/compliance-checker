@@ -15,7 +15,7 @@ public class PolicyStore {
     private PolicyStore() throws RocksDBException {
         if (INSTANCE != null) throw new IllegalStateException("Singleton already initialized");
         RocksDB.loadLibrary();
-        db = RocksDB.open("/tmp/rocks-policy-store");
+        db = RocksDB.open("c:\\rocksdb");
     }
 
     @NotNull

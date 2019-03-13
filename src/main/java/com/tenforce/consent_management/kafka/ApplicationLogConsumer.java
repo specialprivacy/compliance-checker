@@ -2,10 +2,12 @@ package com.tenforce.consent_management.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tenforce.consent_management.compliance.ComplianceChecker;
-import com.tenforce.consent_management.compliance.HermiTReasonerFactory;
 import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.PolicyStore;
 import com.tenforce.consent_management.log.ApplicationLog;
+
+import special.reasoner.PolicyLogicReasonerFactory;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.*;
@@ -44,7 +46,8 @@ public class ApplicationLogConsumer  extends BaseConsumer {
 
         producer = new KafkaProducer<>(producerProps);
         this.producerTopic = config.getKafkaTopicConsent();
-        complianceChecker = new ComplianceChecker(new HermiTReasonerFactory(), config.getRulesDirectory());
+        //complianceChecker = new ComplianceChecker(new HermiTReasonerFactory(), config.getRulesDirectory());
+        complianceChecker = new ComplianceChecker(new PolicyLogicReasonerFactory(), config.getRulesDirectory());
     }
 
     private static Properties getConsumerProperties(@NotNull Configuration config) {

@@ -7,6 +7,9 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.jetbrains.annotations.NotNull;
 import org.rocksdb.RocksDBException;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +26,7 @@ import java.util.UUID;
 public class PolicyConsumer extends BaseConsumer {
     private final PolicyStore policyStore = PolicyStore.getInstance();
     private static final Logger log = LoggerFactory.getLogger(PolicyConsumer.class);
+    private static final OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
 
     public PolicyConsumer(@NotNull Configuration config) throws RocksDBException {
         super(config.getKafkaTopicPolicy(), getConsumerProperties(config));
@@ -44,7 +48,10 @@ public class PolicyConsumer extends BaseConsumer {
         ObjectMapper mapper = new ObjectMapper();
         try {
             Policy postedPolicy = mapper.readValue(record.value(), Policy.class);
-            policyStore.updatePolicy(record.key(), postedPolicy.toOWL());
+            if(postedPolicy.getSimplePolicies().isEmpty()){
+            	policyStore.updatePolicy(record.key(), dataFactory.getOWLClass(OWLRDFVocabulary.OWL_NOTHING.getIRI()));
+            }
+            else policyStore.updatePolicy(record.key(), postedPolicy.toOWL());
         } catch (IOException e) {
             log.error("Failed to parse kafka message");
             e.printStackTrace();

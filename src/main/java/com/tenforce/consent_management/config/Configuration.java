@@ -27,8 +27,8 @@ public class Configuration {
     private String kafkaURLList = "localhost:9092";
     private String kafkaClientID = UUID.randomUUID().toString();
     private String kafkaTopicPolicy = "full-policies";
-    private String kafkaTopicAccess = "accesses";
-    private String kafkaTopicConsent = "consents";
+    private String kafkaTopicAccess = "application-logs";
+    private String kafkaTopicConsent = "checked-application-logs";
     private Level loggingLevel = Level.INFO;
 
     // the names of the environment variables

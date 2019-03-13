@@ -3,6 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
+  <repositories>
+	  <repository>
+	    <id>data-local</id>
+	    <name>data</name>
+	    <url>file://${basedir}/repo</url>
+	  </repository>
+  </repositories>
 
   <groupId>com.tenforce.consent_management</groupId>
   <artifactId>ComplianceChecker</artifactId>
@@ -44,7 +52,7 @@
     <dependency>
       <groupId>org.rocksdb</groupId>
       <artifactId>rocksdbjni</artifactId>
-      <version>5.13.4</version>
+      <version>5.14.3</version>
     </dependency>
     <dependency>
       <groupId>de.ruedigermoeller</groupId>
@@ -84,10 +92,16 @@
     </dependency>
 
     <dependency>
-      <groupId>com.hermit-reasoner</groupId>
-      <artifactId>org.semanticweb.hermit</artifactId>
-      <version>${hermit.version}</version>
+      <groupId>special.reasoner</groupId>
+      <artifactId>PolicyLogicReasoner</artifactId>
+      <version>1.0</version>
     </dependency>
+    
+    <dependency>
+      <groupId>net.sourceforge.owlapi</groupId>
+      <artifactId>owlapi-distribution</artifactId>
+      <version>5.1.9</version>
+	</dependency>
 
     <dependency>
       <groupId>org.apache.kafka</groupId>
