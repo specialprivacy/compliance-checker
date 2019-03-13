@@ -7,11 +7,10 @@ WORKDIR /app
 COPY . /app
 RUN mvn clean package
 
-FROM openjdk:8-alpine
+FROM anapsix/alpine-java:8u202b08_jdk_unlimited
 WORKDIR /app
-CMD ["java", "-jar", "/app/compliance-checker.jar"]
 ENV COMPLIANCECHECKERVERSION=0.1
 ENV RULES_DIRECTORY=/rules
 COPY rules /rules
-RUN apk add --update libc6-compat
 COPY --from=build /app/target/ComplianceChecker-${COMPLIANCECHECKERVERSION}.jar ./compliance-checker.jar
+CMD ["java", "-jar", "/app/compliance-checker.jar"]
