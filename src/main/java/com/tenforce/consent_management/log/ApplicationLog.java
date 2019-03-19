@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.sql.Timestamp;
 
 /**
  * Created by langens-jonathan on 4/25/18.
@@ -40,11 +41,13 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ApplicationLog {
     private long timestamp;
+    private long checkedTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
     private String process;
     private String purpose;
     private String processing;
     private String recipient;
     private String storage;
+
     private String userID;
     private String eventID;
     private List<String> data;
@@ -150,5 +153,13 @@ public class ApplicationLog {
 
     public void setHasConsent(boolean hasConsent) {
         this.hasConsent = hasConsent;
+    }
+
+    public long getCheckedTimestamp() {
+        return checkedTimestamp;
+    }
+
+    public void setCheckedTimestamp(long checkedTimestamp) {
+        this.checkedTimestamp = checkedTimestamp;
     }
 }
