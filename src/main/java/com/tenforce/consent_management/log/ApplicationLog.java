@@ -161,4 +161,12 @@ public class ApplicationLog {
     public void setHasConsent(boolean hasConsent) {
         this.hasConsent = hasConsent;
     }
+
+    public long getCheckedTimestamp() {
+        return checkedTimestamp;
+    }
+
+    public void setCheckedTimestamp(long checkedTimestamp) {
+        this.checkedTimestamp = checkedTimestamp;
+    }
 }
