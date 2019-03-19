@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . /app
 RUN mvn clean package
 
-FROM openjdk:8-alpine
+FROM openjdk:8-jdk-stretch
 WORKDIR /app
 CMD ["java", "-jar", "/app/compliance-checker.jar"]
 ENV COMPLIANCECHECKERVERSION=0.1
