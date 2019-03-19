@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.sql.Timestamp;
 
 /**
  * Created by langens-jonathan on 4/25/18.
@@ -46,6 +47,7 @@ import java.util.stream.Collectors;
 public class ApplicationLog {
     private String eventID;
     private long timestamp;
+    private long checkedTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
     private String process;
     private String userID;
     private boolean hasConsent = false;
