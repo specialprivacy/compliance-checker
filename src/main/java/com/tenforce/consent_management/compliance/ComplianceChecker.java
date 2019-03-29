@@ -8,6 +8,8 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import special.reasoner.PolicyLogicConfiguration;
+import special.reasoner.PolicyLogicReasoner;
 import special.reasoner.PolicyLogicReasonerFactory;
 
 import java.io.File;
@@ -34,7 +36,7 @@ public class ComplianceChecker {
 
     // the ontology manager, this is expected to keep the state of all ontologies
     private OWLDataFactory factory = OWLManager.getOWLDataFactory();
-    private OWLReasoner reasoner;
+    private PolicyLogicReasoner reasoner;
 
     /**
      * default constructor
@@ -59,7 +61,12 @@ public class ComplianceChecker {
         );
         OWLOntology ont = manager
                 .createOntology(IRI.create("http://tenforce.com/ontology/base"), ontologies);
-        reasoner = reasonerFactory.createReasoner(ont);
+
+        // a very ugly way of setting the caching but as it has to go fast this is what we do
+        PolicyLogicConfiguration conf = new PolicyLogicConfiguration(true);
+        reasoner = (PolicyLogicReasoner)reasonerFactory.createReasoner(ont, conf);
+
+        reasoner.setCache(true, true);
     }
 
     /**
