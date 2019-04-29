@@ -1,18 +1,11 @@
 package com.tenforce.consent_management.log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tenforce.consent_management.compliance.ComplianceChecker;
-import com.tenforce.consent_management.kafka.ApplicationLogConsumer;
-
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

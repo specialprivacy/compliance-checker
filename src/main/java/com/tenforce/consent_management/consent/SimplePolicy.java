@@ -20,13 +20,9 @@ import org.semanticweb.owlapi.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SimplePolicy {
     private String dataCollection;
-
     private String processingCollection;
-
     private String purposeCollection;
-
     private String recipientCollection;
-
     private String storageCollection;
 
     private static final OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
