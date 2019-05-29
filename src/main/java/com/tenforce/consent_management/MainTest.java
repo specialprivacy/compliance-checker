@@ -1,9 +1,9 @@
 package com.tenforce.consent_management;
 
-import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import special.reasoner.PolicyLogicReasonerFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +50,6 @@ public class MainTest {
 
     private static OWLClassExpression getOWLClass(String classIRI, OWLOntology ontology) {
         Set<OWLClassExpression> sc = owlOntologyManager.getOWLDataFactory().getOWLClass(IRI.create(classIRI)).getEquivalentClasses(ontology);
-
         if(sc.size() <= 0) {
             return null;
         }
@@ -125,11 +124,12 @@ public class MainTest {
     }
 
     private static OWLReasoner getReasoner(String folderName) throws OWLOntologyCreationException {
-            File folder = new File(folderName);
-            OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        File folder = new File(folderName);
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 
         OWLOntology ont = manager
                     .createOntology(IRI.create("http://tenforce.com/ontology/base"), new HashSet<OWLOntology>());
-        return new Reasoner(ont);
+
+        return new PolicyLogicReasonerFactory().createReasoner(ont);
     }
 }

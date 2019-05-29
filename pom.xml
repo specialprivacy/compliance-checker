@@ -4,6 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <repositories>
+    <repository>
+      <id>data-local</id>
+      <name>data</name>
+      <url>file://${basedir}/repo</url>
+    </repository>
+  </repositories>
+
   <groupId>com.tenforce.consent_management</groupId>
   <artifactId>ComplianceChecker</artifactId>
   <version>0.1</version>
@@ -94,6 +102,19 @@
       <artifactId>kafka-clients</artifactId>
       <version>${kafka.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>special.reasoner</groupId>
+      <artifactId>PolicyLogicReasoner</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <!--<dependency>-->
+      <!--<groupId>net.sourceforge.owlapi</groupId>-->
+      <!--<artifactId>owlapi-distribution</artifactId>-->
+      <!--<version>5.1.9</version>-->
+    <!--</dependency>-->
+
   </dependencies>
   <build>
     <plugins>

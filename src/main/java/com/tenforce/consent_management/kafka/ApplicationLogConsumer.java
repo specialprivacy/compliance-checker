@@ -2,11 +2,12 @@ package com.tenforce.consent_management.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tenforce.consent_management.compliance.ComplianceChecker;
-import com.tenforce.consent_management.compliance.HermiTReasonerFactory;
+//import com.tenforce.consent_management.compliance.HermiTReasonerFactory;
 import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.PolicyStore;
 import com.tenforce.consent_management.log.ApplicationLog;
 import com.tenforce.consent_management.log.CheckedApplicationLog;
+import special.reasoner.PolicyLogicReasonerFactory;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.*;
@@ -16,7 +17,6 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.Properties;
 
@@ -49,7 +49,7 @@ public class ApplicationLogConsumer  extends BaseConsumer {
 
         producer = new KafkaProducer<>(producerProps);
         this.producerTopic = config.getKafkaTopicConsent();
-        complianceChecker = new ComplianceChecker(new HermiTReasonerFactory(), config.getRulesDirectory());
+        complianceChecker = new ComplianceChecker(new PolicyLogicReasonerFactory(), config.getRulesDirectory());
     }
 
     private static Properties getConsumerProperties(@NotNull Configuration config) {
@@ -69,7 +69,9 @@ public class ApplicationLogConsumer  extends BaseConsumer {
             System.out.println("Checking Subject(" + alog.getUserID() + ")-(" + alog.getProcess() + ")");
             OWLClassExpression logClass = policyStore.getPolicy(alog.getProcess());
             OWLClassExpression policyClass = policyStore.getPolicy(alog.getUserID());
+            long check_start = System.currentTimeMillis();
             calog.setHasConsent(null != policyClass && complianceChecker.hasConsent(logClass, policyClass));
+            System.out.println("check took: " + (System.currentTimeMillis() - check_start));
             System.out.println("" + calog.isHasConsent());
             producer.send(
                     new ProducerRecord<>(producerTopic, calog.getEventID(), mapper.writeValueAsString(calog)),

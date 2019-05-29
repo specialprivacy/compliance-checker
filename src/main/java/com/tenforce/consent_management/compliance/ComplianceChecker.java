@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import special.reasoner.PolicyLogicReasonerFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +42,8 @@ public class ComplianceChecker {
      *
      * @param folderName the folder with all ontologies that should be initially loaded
      */
-    public ComplianceChecker(@NotNull OWLReasonerFactory reasonerFactory, @NotNull String folderName)
-        throws OWLOntologyCreationException
+    public ComplianceChecker(@NotNull PolicyLogicReasonerFactory reasonerFactory, @NotNull String folderName)
+    throws OWLOntologyCreationException
     {
         File folder = new File(folderName);
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -57,7 +58,7 @@ public class ComplianceChecker {
         );
         OWLOntology ont = manager
                 .createOntology(IRI.create("http://tenforce.com/ontology/base"), ontologies);
-        reasoner = reasonerFactory.instantiateReasoner(ont);
+        reasoner = reasonerFactory.createReasoner(ont);
     }
 
     /**

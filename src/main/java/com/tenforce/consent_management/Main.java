@@ -43,12 +43,13 @@ public class Main {
     }
 
     private static OWLClassExpression getOWLClass(String classIRI, OWLOntology ontology) {
-        Set<OWLClassExpression> sc = owlOntologyManager.getOWLDataFactory().getOWLClass(IRI.create(classIRI)).getEquivalentClasses(ontology);
-
-        if(sc.size() <= 0) {
-            return null;
-        }
-        return (OWLClassExpression)sc.toArray()[0];
+//        Set<OWLClassExpression> sc = owlOntologyManager.getOWLDataFactory().getOWLClass(IRI.create(classIRI)).getEquivalentClasses(ontology);
+//
+//        if(sc.size() <= 0) {
+//            return null;
+//        }
+//        return (OWLClassExpression)sc.toArray()[0];
+        return null;
     }
 
     private static String getPolicyID(File file) {
