@@ -6,6 +6,7 @@ import com.tenforce.consent_management.compliance.HermiTReasonerFactory;
 import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.PolicyStore;
 import com.tenforce.consent_management.log.ApplicationLog;
+import com.tenforce.consent_management.log.CheckedApplicationLog;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.*;
@@ -32,6 +33,10 @@ public class ApplicationLogConsumer  extends BaseConsumer {
 
     private final ComplianceChecker complianceChecker;
     private final PolicyStore policyStore = PolicyStore.getInstance();
+
+    public ComplianceChecker getComplianceChecker() {
+        return this.complianceChecker;
+    }
 
     public ApplicationLogConsumer(@NotNull Configuration config) throws RocksDBException, OWLOntologyCreationException {
         super(config.getKafkaTopicAccess(), getConsumerProperties(config));
@@ -60,11 +65,14 @@ public class ApplicationLogConsumer  extends BaseConsumer {
         ObjectMapper mapper = new ObjectMapper();
         try {
             ApplicationLog alog= mapper.readValue(record.value(), ApplicationLog.class);
-            OWLClassExpression logClass = alog.toOWL();
+            CheckedApplicationLog calog = new CheckedApplicationLog(alog);
+            System.out.println("Checking Subject(" + alog.getUserID() + ")-(" + alog.getProcess() + ")");
+            OWLClassExpression logClass = policyStore.getPolicy(alog.getProcess());
             OWLClassExpression policyClass = policyStore.getPolicy(alog.getUserID());
-            alog.setHasConsent(null != policyClass && complianceChecker.hasConsent(logClass, policyClass));
+            calog.setHasConsent(null != policyClass && complianceChecker.hasConsent(logClass, policyClass));
+            System.out.println("" + calog.isHasConsent());
             producer.send(
-                    new ProducerRecord<>(producerTopic, alog.getEventID(), mapper.writeValueAsString(alog)),
+                    new ProducerRecord<>(producerTopic, calog.getEventID(), mapper.writeValueAsString(calog)),
                     (recordMetadata, e) -> {
                         if (null != e) {
                             // TODO: we should die in this case especially once we ask kafka to retry

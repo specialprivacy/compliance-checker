@@ -1,7 +1,6 @@
 package com.tenforce.consent_management.consent;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tenforce.consent_management.config.Configuration;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 

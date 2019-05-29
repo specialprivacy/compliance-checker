@@ -22,6 +22,11 @@ import java.util.UUID;
  */
 public class PolicyConsumer extends BaseConsumer {
     private final PolicyStore policyStore = PolicyStore.getInstance();
+
+    public PolicyStore getPolicyStore() {
+        return this.policyStore;
+    }
+
     private static final Logger log = LoggerFactory.getLogger(PolicyConsumer.class);
 
     public PolicyConsumer(@NotNull Configuration config) throws RocksDBException {

@@ -109,7 +109,7 @@ public class ComplianceChecker {
      * @return void -- this function returns nothing
      * @throws OWLOntologyCreationException if the file does not contain a valid OWL ontology
      */
-    private OWLOntology loadOntology(OWLOntologyManager manager, String filename) throws OWLOntologyCreationException {
+    public OWLOntology loadOntology(OWLOntologyManager manager, String filename) throws OWLOntologyCreationException {
         log.info("[*] loading ontology file... " + filename);
         return manager.loadOntology(IRI.create(new File(filename)));
     }
