@@ -8,15 +8,24 @@ public class CheckedApplicationLog {
     private String eventID;
     private boolean hasConsent = false;
     private long timeTaken;
+    private long checkingTime;
+
+    public long getCheckingTime() {
+        return checkingTime;
+    }
+
+    public void setCheckingTime(long checkingTime) {
+        this.checkingTime = checkingTime;
+    }
 
     public CheckedApplicationLog() {
-        this.timestamp = System.currentTimeMillis();
+        this.timestamp = System.currentTimeMillis() * 1000;
     }
 
     public CheckedApplicationLog(ApplicationLog alog) {
         this.eventID = alog.getEventID().toString();
-        this.timestamp = System.currentTimeMillis();
-        this.timeTaken = this.timestamp - alog.getTimestamp();
+        this.timestamp = System.currentTimeMillis() * 1000;
+        this.timeTaken = this.timestamp  - ( alog.getTimestamp() * 1000 );
     }
 
     public long getTimestamp() {

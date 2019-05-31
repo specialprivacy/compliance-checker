@@ -67,9 +67,16 @@ public class ApplicationLogConsumer  extends BaseConsumer {
             ApplicationLog alog= mapper.readValue(record.value(), ApplicationLog.class);
             CheckedApplicationLog calog = new CheckedApplicationLog(alog);
             System.out.println("Checking Subject(" + alog.getUserID() + ")-(" + alog.getProcess() + ")");
+            long loading_start = System.nanoTime();
             OWLClassExpression logClass = policyStore.getPolicy(alog.getProcess());
             OWLClassExpression policyClass = policyStore.getPolicy(alog.getUserID());
+            long loading_time = ((System.nanoTime() - loading_start)/1000);
+            System.out.println("loading from rocks db took: " + loading_time);
+            long check_start = System.nanoTime();
             calog.setHasConsent(null != policyClass && complianceChecker.hasConsent(logClass, policyClass));
+            long checking_time = ((System.nanoTime() - check_start)/1000);
+            System.out.println("check took: " + checking_time);
+            calog.setCheckingTime(checking_time);
             System.out.println("" + calog.isHasConsent());
             producer.send(
                     new ProducerRecord<>(producerTopic, calog.getEventID(), mapper.writeValueAsString(calog)),
