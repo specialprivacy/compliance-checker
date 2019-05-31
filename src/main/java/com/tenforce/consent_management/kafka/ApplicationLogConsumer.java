@@ -7,6 +7,7 @@ import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.consent.PolicyStore;
 import com.tenforce.consent_management.log.ApplicationLog;
 import com.tenforce.consent_management.log.CheckedApplicationLog;
+import org.apache.kafka.common.requests.SyncGroupRequest;
 import special.reasoner.PolicyLogicReasonerFactory;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -67,11 +68,16 @@ public class ApplicationLogConsumer  extends BaseConsumer {
             ApplicationLog alog= mapper.readValue(record.value(), ApplicationLog.class);
             CheckedApplicationLog calog = new CheckedApplicationLog(alog);
             System.out.println("Checking Subject(" + alog.getUserID() + ")-(" + alog.getProcess() + ")");
+            long loading_start = System.nanoTime();
             OWLClassExpression logClass = policyStore.getPolicy(alog.getProcess());
             OWLClassExpression policyClass = policyStore.getPolicy(alog.getUserID());
-            long check_start = System.currentTimeMillis();
+            long loading_time = ((System.nanoTime() - loading_start)/1000);
+            System.out.println("loading from rocks db took: " + loading_time);
+            long check_start = System.nanoTime();
             calog.setHasConsent(null != policyClass && complianceChecker.hasConsent(logClass, policyClass));
-            System.out.println("check took: " + (System.currentTimeMillis() - check_start));
+            long checking_time = ((System.nanoTime() - check_start)/1000);
+            System.out.println("check took: " + checking_time);
+            calog.setCheckingTime(checking_time);
             System.out.println("" + calog.isHasConsent());
             producer.send(
                     new ProducerRecord<>(producerTopic, calog.getEventID(), mapper.writeValueAsString(calog)),

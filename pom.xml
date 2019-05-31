@@ -91,11 +91,11 @@
       <version>${logback.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.hermit-reasoner</groupId>
-      <artifactId>org.semanticweb.hermit</artifactId>
-      <version>${hermit.version}</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.hermit-reasoner</groupId>-->
+      <!--<artifactId>org.semanticweb.hermit</artifactId>-->
+      <!--<version>${hermit.version}</version>-->
+    <!--</dependency>-->
 
     <dependency>
       <groupId>org.apache.kafka</groupId>
@@ -109,11 +109,11 @@
       <version>1.0</version>
     </dependency>
 
-    <!--<dependency>-->
-      <!--<groupId>net.sourceforge.owlapi</groupId>-->
-      <!--<artifactId>owlapi-distribution</artifactId>-->
-      <!--<version>5.1.9</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>net.sourceforge.owlapi</groupId>
+      <artifactId>owlapi-distribution</artifactId>
+      <version>5.1.9</version>
+    </dependency>
 
   </dependencies>
   <build>

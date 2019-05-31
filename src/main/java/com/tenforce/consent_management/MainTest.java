@@ -4,7 +4,10 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import special.reasoner.PolicyLogicReasonerFactory;
+import uk.ac.manchester.cs.owl.owlapi.OWLClassExpressionImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLEquivalentClassesAxiomImpl;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,21 +26,22 @@ public class MainTest {
         String useCaseFolder = "/home/jonathan/projects/special/test_use_cases/";
 
         HashMap<String, OWLClassExpression> policyMap = preload_application_policies(useCaseFolder);
+        preload_application_policies("/home/jonathan/projects/special/special pilots use cases/imports");
 
-        OWLClassExpression p = policyMap.get("C-ID_1");
+        owlReasoner = instantiateReasoner();
+
+        OWLClassExpression p = policyMap.get("test");
         OWLClassExpression c = policyMap.get("S-F-ID_1");
 
         OWLDataFactory factory = OWLManager.getOWLDataFactory();
-        try {
-            OWLReasoner reasoner = getReasoner("./rules");
-            boolean entailed = reasoner.isEntailed(factory.getOWLSubClassOfAxiom(p, c));
+            boolean entailed = owlReasoner.isEntailed(factory.getOWLSubClassOfAxiom(p, c));
             System.out.println("this policy is ok: " + entailed);
-        } catch (OWLOntologyCreationException e) {
-            System.out.println(e.toString());
-        }
+
     }
 
     private static OWLOntologyManager owlOntologyManager = OWLManager.createOWLOntologyManager();
+
+    private static OWLReasoner owlReasoner = null;
 
     private static String getClassIRI(String policyId, Set<OWLClassExpression> expressions) {
         for (OWLClassExpression oce : expressions) {
@@ -48,12 +52,8 @@ public class MainTest {
         return null;
     }
 
-    private static OWLClassExpression getOWLClass(String classIRI, OWLOntology ontology) {
-        Set<OWLClassExpression> sc = owlOntologyManager.getOWLDataFactory().getOWLClass(IRI.create(classIRI)).getEquivalentClasses(ontology);
-        if(sc.size() <= 0) {
-            return null;
-        }
-        return (OWLClassExpression)sc.toArray()[0];
+    private static OWLClass getOWLClass(String classIRI, OWLOntology ontology) {
+        return owlOntologyManager.getOWLDataFactory().getOWLClass(IRI.create(classIRI));
     }
 
     private static String getPolicyID(File file) {
@@ -78,13 +78,21 @@ public class MainTest {
                         String policyId = getPolicyID(owlFile);
 
                         String iri = getClassIRI(policyId, ontology.getNestedClassExpressions());
-                        if(iri == null) {
+
+                        Stream<OWLAxiom> axiomStream = ontology.axioms();
+                        Optional<OWLAxiom> anyAxiom = axiomStream.findAny();
+                        if(!anyAxiom.isPresent()) {
                             return;
                         }
-
-                        OWLClassExpression p = getOWLClass(iri, ontology);
-
-                        policyMap.put(policyId, p);
+                        OWLAxiom axiom = anyAxiom.get();
+                        if(axiom.getClass() == OWLEquivalentClassesAxiomImpl.class)
+                        {
+                            OWLEquivalentClassesAxiomImpl eqAxiom = (OWLEquivalentClassesAxiomImpl)axiom;
+                            Object[] expressions = eqAxiom.classExpressions().toArray();
+                            if(expressions.length >= 2) {
+                                policyMap.put(policyId, ((OWLClassExpression)expressions[1]));
+                            }
+                        }
                     } catch(OWLOntologyCreationException e) {
 //                        e.printStackTrace();
                     }
@@ -99,7 +107,6 @@ public class MainTest {
     }
 
     private static HashMap<String, OWLClassExpression> preload_application_policies(String folder) {
-
         HashMap<String, OWLClassExpression> policyMap = new HashMap<String, OWLClassExpression>();
         try (Stream<Path> walk = Files.walk(Paths.get(folder))) {
 
@@ -123,13 +130,16 @@ public class MainTest {
         return policyMap;
     }
 
-    private static OWLReasoner getReasoner(String folderName) throws OWLOntologyCreationException {
-        File folder = new File(folderName);
-        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-
-        OWLOntology ont = manager
+    private static OWLReasoner instantiateReasoner() {
+        OWLReasoner reasoner = null;
+        try {
+            OWLOntology ont = owlOntologyManager
                     .createOntology(IRI.create("http://tenforce.com/ontology/base"), new HashSet<OWLOntology>());
+            reasoner = new PolicyLogicReasonerFactory().createReasoner(ont);
+        } catch (OWLOntologyCreationException e) {
+            e.printStackTrace();
+        }
 
-        return new PolicyLogicReasonerFactory().createReasoner(ont);
+        return reasoner;
     }
 }

@@ -1,6 +1,5 @@
 package com.tenforce.consent_management;
 
-import com.tenforce.consent_management.compliance.ComplianceChecker;
 import com.tenforce.consent_management.config.Configuration;
 import com.tenforce.consent_management.kafka.ApplicationLogConsumer;
 import com.tenforce.consent_management.kafka.PolicyConsumer;
@@ -10,6 +9,7 @@ import org.semanticweb.owlapi.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLEquivalentClassesAxiomImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,13 +44,7 @@ public class Main {
     }
 
     private static OWLClassExpression getOWLClass(String classIRI, OWLOntology ontology) {
-//        Set<OWLClassExpression> sc = owlOntologyManager.getOWLDataFactory().getOWLClass(IRI.create(classIRI)).getEquivalentClasses(ontology);
-//
-//        if(sc.size() <= 0) {
-//            return null;
-//        }
-//        return (OWLClassExpression)sc.toArray()[0];
-        return null;
+        return owlOntologyManager.getOWLDataFactory().getOWLClass(IRI.create(classIRI));
     }
 
     private static String getPolicyID(File file) {
@@ -67,20 +62,29 @@ public class Main {
 
             result.forEach(x -> {
                 if(x.toLowerCase().endsWith((".owl"))) {
+                    System.out.println("starting to parse " + x);
                     File owlFile = new File(x);
                     try {
-                        OWLOntology ontology = Main.applicationLogConsumer.getComplianceChecker().loadOntology(OWLManager.createOWLOntologyManager(), x);
-
+                        //OWLOntology ontology = applicationLogConsumer.getComplianceChecker().loadOntology(OWLManager.createOWLOntologyManager(), x);
+                        OWLOntology ontology = owlOntologyManager.loadOntology(IRI.create(new File(x)));
                         String policyId = getPolicyID(owlFile);
 
                         String iri = getClassIRI(policyId, ontology.getNestedClassExpressions());
-                        if(iri == null) {
+
+                        Stream<OWLAxiom> axiomStream = ontology.axioms();
+                        Optional<OWLAxiom> anyAxiom = axiomStream.findAny();
+                        if(!anyAxiom.isPresent()) {
                             return;
                         }
-
-                        OWLClassExpression p = getOWLClass(iri, ontology);
-
-                        policyMap.put(policyId, p);
+                        OWLAxiom axiom = anyAxiom.get();
+                        if(axiom.getClass() == OWLEquivalentClassesAxiomImpl.class)
+                        {
+                            OWLEquivalentClassesAxiomImpl eqAxiom = (OWLEquivalentClassesAxiomImpl)axiom;
+                            Object[] expressions = eqAxiom.classExpressions().toArray();
+                            if(expressions.length >= 2) {
+                                policyMap.put(policyId, ((OWLClassExpression)expressions[1]));
+                            }
+                        }
                     } catch(OWLOntologyCreationException e) {
 //                        e.printStackTrace();
                     }
@@ -145,6 +149,7 @@ public class Main {
             applicationLogConsumer = new ApplicationLogConsumer(config);
 
             log.info("Starting to preload application policies");
+            preload_application_policies("/policies/imports");
             preload_application_policies("/policies/compliance");
 
             final ExecutorService executor = Executors.newFixedThreadPool(2);
