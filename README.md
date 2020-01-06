@@ -1,10 +1,12 @@
 # Compliance Checker
+
+## Description
 This is a stream processor which check if application logs are compliant with user consent policies. It relies on HermiT and implements the policy language from deliverable D2.1
 
-## Run
+## Configuration
 The application runs as a standalone jar file. Everything is packaged as an uberjar, so no additional dependencies
 are required.
-A docker image is available at `registry-special.tenforce.com/special/complaince-checker`
+A docker image is available at `registry-special.tenforce.com/special/compliance-checker`
 
 Configuration is passed in through environment variables:
 
@@ -30,13 +32,3 @@ The docker image can be built in the standard way
 ```bash
 docker build .
 ```
-
-## TODO
-* Add more configuration validation
-* Tests
-* Add support for Piero's custom algorithm
-* Add support for time dimension on logs and policies (logs should be checked with the policy valid at the proper time)
-* Reevaluate package structure
-* Preallocate buffer when reading from rocksdb
-* Better error handling, manual offset committing, in ApplicationLogConsumer (see todo's in code)
-* Investigate keeping often used user policies in memory
