@@ -13,5 +13,5 @@ CMD ["java", "-jar", "/app/compliance-checker.jar"]
 ENV COMPLIANCECHECKERVERSION=0.1
 ENV RULES_DIRECTORY=/rules
 COPY rules /rules
-RUN apk add --update libc6-compat
+RUN apk update && apk add --no-cache gcompat
 COPY --from=build /app/target/ComplianceChecker-${COMPLIANCECHECKERVERSION}.jar ./compliance-checker.jar
